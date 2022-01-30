@@ -12,10 +12,27 @@ var dictionary = [
 var wordsPanel = document.querySelector(".words")
 
 function isWordValid(word){
-    let capitalizedWordForDict = word.toLowerCase();
-    let validity =  dictionary.indexOf(capitalizedWordForDict);
+    return new Promise((resolve, reject) => {
+        let capitalizedWordForDict = word.toLowerCase();
+        let validity =  dictionary.indexOf(capitalizedWordForDict);
+        console.log("valididty", validity)
+        if(validity == -1) {
+            fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+capitalizedWordForDict)
+            .then(res => res.json())
+            .then(res => {
+                console.log("response", res)
+                validity = res && res[0].word ? true : false
+                resolve(validity)
+            })
+            .catch(err => {
+                resolve(validity != -1)
+            })
+        } else {
+            reject(false)
+        }
+    })
+    
     // console.log("valid",capitalizedWordForDict, validity)
-    return validity != -1;
 }
 
 function displayToast(msg, timer) {
@@ -59,7 +76,7 @@ function checkMatching(currentRowHTML) {
     currentRowHTML.classList.add('active');//Add active class new row
 }
 
-function handleKeyboard(e){
+async function handleKeyboard(e){
     let item = e.target
     let itemType = e.target && e.target.nodeName;
     if(itemType == 'SPAN') {
@@ -90,7 +107,7 @@ function handleKeyboard(e){
             let currentRowHTML = wordsPanel.children[currentRow];
             // validity
             if(currentWord.length == 0) {return;}
-            let validWord = isWordValid(currentWord);
+            let validWord = await isWordValid(currentWord);
             if(!validWord){
                 console.log("Not a valid word", currentWord);
                 displayToast("Not a valid Word! 😬", 2000)
