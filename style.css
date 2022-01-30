@@ -91,3 +91,18 @@ main .keyboard .action span {
     background-color: goldenrod;
     color: white;
 }
+
+@media only screen and (max-width: 600px) {
+    main .keyboard .row span {
+        padding: 6px;
+        background-color: silver;
+        margin: 5px;
+        border-radius: 4px;
+    }
+
+    main .keyboard {
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+  }
