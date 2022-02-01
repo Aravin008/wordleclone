@@ -13,6 +13,17 @@ header{
     padding: 18px 0;
 }
 
+header .tryagain {
+    margin: 0 auto;
+    background-color: aliceblue;
+    font-size: 40px;
+    text-align: center;
+    width: 300px;
+    border: 2px solid black;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
 main {
     padding: 20px 0;
 }
@@ -107,4 +118,4 @@ main .keyboard .action span {
         font-size: 16px;
     }
     
-  }
+}
