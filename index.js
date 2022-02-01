@@ -4,7 +4,7 @@ var currentWord = "";
 var gameProgress = [];
 var gameWord = "trust";
 var keysStatus = {};
-var maxGuessWords = 5;
+var maxGuessWords = 6;
 var maxLengthWord = 5;
 
 var dictionary = [ 
