@@ -68,7 +68,7 @@ main .keyboard .row {
 
 main .keyboard .row span {
     padding: 16px;
-    background-color: silver;
+    background-color: #d3d6da;
     margin: 5px;
     border-radius: 10px;
 }
@@ -78,24 +78,23 @@ main .keyboard .action span {
 }
 
 .wrong {
-    background-color: #1a1a1b;;
+    background-color: #787c7e !important;
     color: white;
 }
 
 .correct {
-    background-color: green;
+    background-color: green !important;
     color: white;
 }
 
 .misplace {
-    background-color: goldenrod;
+    background-color: goldenrod !important;
     color: white;
 }
 
 @media only screen and (max-width: 600px) {
     main .keyboard .row span {
         padding: 6px;
-        background-color: silver;
         margin: 5px;
         border-radius: 4px;
     }
