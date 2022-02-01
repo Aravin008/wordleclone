@@ -106,6 +106,25 @@ main .keyboard .action span {
     color: white;
 }
 
+.loader {
+    border: 10px solid #f3f3f3;
+    border-top: 10px solid #3498db;
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+    position: absolute;
+    top: calc(30% - 20px);
+    left: calc(50% - 20px);
+    width: 50px;
+    height: 50px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+
+/* Mobile and Tab  */
 @media only screen and (max-width: 600px) {
     main .keyboard .row span {
         padding: 6px;
@@ -126,5 +145,10 @@ main .keyboard .action span {
         font-size: 16px;
         font-weight: 600;
     }
+
+    .loader {
+        width: 30px;
+        height: 30px;
+      }
     
 }
