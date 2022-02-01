@@ -22,6 +22,13 @@ function handleLoader(fetchVal){
     const loaderHTML = document.querySelector('.loader');
     loaderHTML.style.visibility = fetchVal ? 'visible' : 'hidden';
 }
+
+function displayPermanentMessage(msg) {
+    let tryAgainHTML = document.getElementById('displayMessage');
+    tryAgainHTML.innerText = msg;
+    tryAgainHTML.style.display = 'block';
+}
+
 function isWordValid(word){
     return new Promise((resolve, reject) => {
         let capitalizedWordForDict = word.toLowerCase();
@@ -69,6 +76,7 @@ function checkAndApplyColor(currentRowHTML) {
 }
 
 function checkMatching(currentRowHTML) {
+    let checkIfAllMatched = 0;
     for(let i=0; i<currentWord.length; i++) {
         let currentLetterHTML = currentRowHTML.children[i];
         let keysHTML = keyboardPanelHTML.querySelectorAll('span');
@@ -89,6 +97,7 @@ function checkMatching(currentRowHTML) {
             }
         });
         if(letter == gameWord[i]){
+            checkIfAllMatched += 1;
             currentLetterHTML.classList.add('correct');
         } else if(gameWord.includes(letter)) {
             currentLetterHTML.classList.add('misplace');
@@ -102,10 +111,14 @@ function checkMatching(currentRowHTML) {
     currentRowHTML.classList.remove('active');//remove active class old row
     // Move to next row after checking.
     currentRow += 1;
-    console.log("current row", currentRow)
+    if(checkIfAllMatched == maxLengthWord) {
+        //gameWon 
+        gameWon = true;
+        displayPermanentMessage('You guessed it right! 🥳' + '  click to play again!');
+        return;
+    }
     if(currentRow == maxGuessWords) {
-        let tryAgainHTML = document.getElementById('try-again');
-        tryAgainHTML.style.display = 'block';
+        displayPermanentMessage('Try again! 😕');
     } else {
         currentRowHTML = wordsPanel.children[currentRow];
         currentRowHTML.classList.add('active');//Add active class new row
@@ -117,6 +130,9 @@ function refreshPage(e) {
 }
 
 async function handleKeyboard(e){
+    if(gameWon) {
+        return;
+    }
     let item = e.target
     let itemType = e.target && e.target.nodeName;
     if(itemType == 'SPAN') {

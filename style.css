@@ -16,7 +16,7 @@ header{
 header .tryagain {
     margin: 0 auto;
     background-color: aliceblue;
-    font-size: 40px;
+    font-size: 30px;
     text-align: center;
     width: 300px;
     border: 2px solid black;
@@ -149,6 +149,10 @@ main .keyboard .action span {
     .loader {
         width: 30px;
         height: 30px;
-      }
+    }
+
+    header .tryagain {
+        font-size: 22px;
+    }
     
 }
