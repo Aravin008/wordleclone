@@ -72,6 +72,9 @@ main .keyboard .row span {
     margin: 5px;
     border-radius: 10px;
 }
+main .keyboard .row span:hover {
+    cursor: pointer;
+}
 
 main .keyboard .action span {
     background-color: bisque;
