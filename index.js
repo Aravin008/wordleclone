@@ -135,6 +135,9 @@ async function handleKeyboard(e){
 
         // For enter function
         if(key == 'Enter') {
+            if(currentWord.length < maxLengthWord) {
+                return;
+            }
             let currentRowHTML = wordsPanel.children[currentRow];
             // validity
             if(currentWord.length == 0) {return;}
