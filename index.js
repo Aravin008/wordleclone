@@ -6,6 +6,7 @@ var gameWord = "trust";
 var keysStatus = {};
 var maxGuessWords = 6;
 var maxLengthWord = 5;
+var fetching = false;
 
 var dictionary = [ 
 "abuse", "adult", "agent", "anger", "apple", "award", "basis", "beach", "birth", "block", "blood", "board", "brain", "bread", "break", "brown", "buyer", "cause", "chain", "chair", "chest", "chief", "child", "china", "claim", "class", "clock", "coach", "coast", "court", "cover", "cream", "crime", "cross", "crowd", "crown", "cycle", "dance", "death", "depth", "doubt", "draft", "drama", "dream", "dress", "drink", "drive", "earth", "enemy", "entry", "error", "event", "faith", "fault", "field", "fight", "final", "floor", "focus", "force", "frame", "frank", "front", "fruit", "glass", "grant", "grass", "green", "group", "guide", "heart", "henry", "horse", "hotel", "house", "image", "index", "input", "issue", "japan", "jones", "judge", "knife", "laura", "layer", "level", "lewis", "light", "limit", "lunch", "major", "march", "match", "metal", "model", "money", "month", "motor", "mouth", "music", "night", "noise", "north", "novel", "nurse", "offer", "order", "other", "owner", "panel", "paper", "party", "peace", "peter", "phase", "phone", "piece", "pilot", "pitch", "place", "plane", "plant", "plate", "point", "pound", "power", "press", "price", "pride", "prize", "proof", "queen", "radio", "range", "ratio", "reply", "right", "river", "round", "route", "rugby", "scale", "scene", "scope", "score", "sense", "shape", "share", "sheep", "sheet", "shift", "shirt", "shock", "sight", "simon", "skill", "sleep", "smile", "smith", "smoke", "sound", "south", "space", "speed", "spite", "sport", "squad", "staff", "stage", "start", "state", "steam", "steel", "stock", "stone", "store", "study", "stuff", "style", "sugar", "table", "taste", "terry", "theme", "thing", "title", "total", "touch", "tower", "track", "trade", "train", "trend", "trial", "trust", "truth", "uncle", "union", "unity", "value",
@@ -20,20 +21,23 @@ function isWordValid(word){
         let capitalizedWordForDict = word.toLowerCase();
         let validity =  dictionary.indexOf(capitalizedWordForDict);
         console.log("valididty", validity)
-        if(validity == -1) {
-            console.log("inside fetch")
-            fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+capitalizedWordForDict)
-            .then(res => res.json())
-            .then(res => {
-                console.log("response", res)
-                validity = res && res[0].word ? true : false
-                resolve(validity)
-            })
-            .catch(err => {
-                reject(false)
-            })
+        if(validity == -1 ) {
+            if(fetching == false) {
+                fetching = true;
+                fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+capitalizedWordForDict)
+                .then(res => res.json())
+                .then(res => {
+                    console.log("response", res)
+                    validity = res && res[0].word ? true : false
+                    resolve(validity)
+                    fetching = false;
+                })
+                .catch(err => {
+                    reject(false)
+                    fetching = false;
+                })
+            }
         } else {
-            console.log("inside else")
             resolve(true);
         }
     })
