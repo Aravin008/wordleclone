@@ -10,10 +10,17 @@
 <body>
     <div class="container">
         <header>
-            <h1>Wordle</h1>
+            <nav>
+                <h1>Wordle</h1>
+                <div>
+                    <a href="/wordleclone/"><p class="active">Home</p></a>
+                    <a href="/wordleclone/help"><p >Help</p></a>
+                </div>
+            </nav>
             <p id="error" style="display: none;">Its a wrong word. 😕</p>
             <p id="displayMessage" class="tryagain" style="display: none;" onclick="refreshPage();"> </p>
         </header>
+        <hr></hr>
         <main>
             <section class="words">
                 <div class="word-row active"><span></span><span></span><span></span><span></span><span></span></div>
