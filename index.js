@@ -89,10 +89,10 @@ function loadUpdateTheDictionary() {
             .then(res => {
                 let arrayOfWords = res.data.split(',');
                 const wordsObj = arrayOfWords.reduce((acc, word) => {
-                    const keep = word.split('').filter(function(item, pos, self) { return self.indexOf(item) == pos}).length == word.length;
-                    if(keep) {
+                    // const keep = word.split('').filter(function(item, pos, self) { return self.indexOf(item) == pos}).length == word.length;
+                    // if(keep) {
                         acc[word] = {attempted: false, value: word}
-                    }
+                    // }
                     return acc;
                 }, {});
                 localStorage.setItem('words', JSON.stringify(wordsObj));
@@ -160,8 +160,9 @@ function startTimer(timestamp) {
 function generateNewWord() {
     const local_gameWord = localStorage.getItem('gameword');
     if(local_gameWord) {
-        gameWord = JSON.parse(local_gameWord).value;
-        startTimer(JSON.parse(local_gameWord).timestamp);
+        const gameWordobj = JSON.parse(local_gameWord);
+        gameWord = gameWordobj.word;
+        startTimer(gameWordobj.timestamp);
         return;
     }
     startTimer();
