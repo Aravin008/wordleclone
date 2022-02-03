@@ -34,7 +34,8 @@ function create_UUID(){
     }
     loadUpdateTheDictionary()
     .then(dictionary => {
-        generateNewWord(dictionary);
+        console.log("Dictionary loaded!")
+        generateNewWord();
         batchWordGenerator();
     })
 })();
@@ -68,7 +69,7 @@ function batchWordGenerator() {
             let timestamp = JSON.parse(local_gameWord).timestamp;
             console.log("didTImeElapse", didTimeElapse(timestamp), timestamp);  
             if(didTimeElapse(timestamp)) {
-                generateNewWord();
+                generateNewWord(true);
                 alert("Time's Up! Please try new game.");
                 refreshPage();
             }
@@ -157,9 +158,9 @@ function startTimer(timestamp) {
     }, 1000);
 }
 
-function generateNewWord() {
+function generateNewWord(forceGenerate= false) {
     const local_gameWord = localStorage.getItem('gameword');
-    if(local_gameWord) {
+    if(local_gameWord && !forceGenerate) {
         const gameWordobj = JSON.parse(local_gameWord);
         gameWord = gameWordobj.word;
         startTimer(gameWordobj.timestamp);
@@ -217,7 +218,7 @@ function checkMatching(currentRowHTML) {
         let currentLetterHTML = currentRowHTML.children[i];
         let keysHTML = keyboardPanelHTML.querySelectorAll('span');
         let letter = currentWord[i].toLowerCase();
-        console.log("letter", letter, gameWord[i], letter == gameWord[i]);
+        // console.log("letter", letter, gameWord[i], letter == gameWord[i]);
         Array.from(keysHTML).forEach(function(ele) {
             const keyToCheck = ele.innerText;
             if(keyToCheck.toLowerCase() == letter) {
