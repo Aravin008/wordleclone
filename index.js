@@ -8,15 +8,112 @@ var maxGuessWords = 6;
 var maxLengthWord = 5;
 var fetching = false;
 var gameWon = false;
-
-var dictionary = [ 
-"abuse", "adult", "agent", "anger", "apple", "award", "basis", "beach", "birth", "block", "blood", "board", "brain", "bread", "break", "brown", "buyer", "cause", "chain", "chair", "chest", "chief", "child", "china", "claim", "class", "clock", "coach", "coast", "court", "cover", "cream", "crime", "cross", "crowd", "crown", "cycle", "dance", "death", "depth", "doubt", "draft", "drama", "dream", "dress", "drink", "drive", "earth", "enemy", "entry", "error", "event", "faith", "fault", "field", "fight", "final", "floor", "focus", "force", "frame", "frank", "front", "fruit", "glass", "grant", "grass", "green", "group", "guide", "heart", "henry", "horse", "hotel", "house", "image", "index", "input", "issue", "japan", "jones", "judge", "knife", "laura", "layer", "level", "lewis", "light", "limit", "lunch", "major", "march", "match", "metal", "model", "money", "month", "motor", "mouth", "music", "night", "noise", "north", "novel", "nurse", "offer", "order", "other", "owner", "panel", "paper", "party", "peace", "peter", "phase", "phone", "piece", "pilot", "pitch", "place", "plane", "plant", "plate", "point", "pound", "power", "press", "price", "pride", "prize", "proof", "queen", "radio", "range", "ratio", "reply", "right", "river", "round", "route", "rugby", "scale", "scene", "scope", "score", "sense", "shape", "share", "sheep", "sheet", "shift", "shirt", "shock", "sight", "simon", "skill", "sleep", "smile", "smith", "smoke", "sound", "south", "space", "speed", "spite", "sport", "squad", "staff", "stage", "start", "state", "steam", "steel", "stock", "stone", "store", "study", "stuff", "style", "sugar", "table", "taste", "terry", "theme", "thing", "title", "total", "touch", "tower", "track", "trade", "train", "trend", "trial", "trust", "truth", "uncle", "union", "unity", "value",
-"video", "visit", "voice", "waste", "watch", "water", "while", "white", "whole", "woman", "world", "youth", "alcon", "aught", "hella", "one’s", "ought", "thame", "there", "thine", "thine", "where", "which", "whose", "whoso", "yours", "yours", "admit", "adopt", "agree", "allow", "alter", "apply", "argue", "arise", "avoid", "begin", "blame", "break", "bring", "build", "burst", "carry", "catch", "cause", "check", "claim", "clean", "clear", "climb", "close", "count", "cover", "cross", "dance", "doubt", "drink", "drive", "enjoy", "enter", "exist", "fight", "focus", "force", "guess", "imply", "issue", "judge", "laugh", "learn", "leave", "let’s", "limit", "marry", "match", "occur", "offer", "order", "phone", "place", "point", "press", "prove", "raise", "reach", "refer", "relax", "serve", "shall", "share", "shift", "shoot", "sleep", "solve", "sound", "speak", "spend", "split", "stand", "start", "state", "stick", "study", "teach", "thank", "think", "throw", "touch", "train", "treat", "trust", "visit", 
-"voice", "waste", "watch", "worry", "would", "write", "above", "acute", "alive", "alone", "angry", "aware", "awful", "basic", "black", "blind", "brave", "brief", "broad", "brown", "cheap", "chief", "civil", "clean", "clear", "close", "crazy", "daily", "dirty", "early", "empty", "equal", "exact", "extra", "faint", "false", "fifth", "final", "first", "fresh", "front", "funny", "giant", "grand", "great", "green", "gross", "happy", "harsh", "heavy", "human", "ideal", "inner", "joint", "large", "legal", "level", "light", "local", "loose", "lucky", "magic", "major", "minor", "moral", "naked", "nasty", "naval", "other", "outer", "plain", "prime", "prior", "proud", "quick", "quiet", "rapid", "ready", "right", "roman", "rough", "round", "royal", "rural", "sharp", "sheer", "short", "silly", "sixth", "small", "smart", "solid", "sorry", "spare", "steep", "still", "super", "sweet", "thick", "third", "tight", "total", "tough", "upper", "upset", "urban", "usual", "vague", "valid", "vital", "white", "whole", "wrong", "young", "afore", "after", "bothe", "other", "since", "slash", "until", "where", "while", "aback", "abaft", "aboon", "about", "above", "accel", "adown", "afoot", "afore", "afoul", "after", "again", "agape", "agogo", "agone", "ahead", "ahull", "alife", "alike", "aline", "aloft", "alone", "along", "aloof", "aloud", "amiss", "amply", "amuck", "apace", "apart", "aptly", "arear", "aside", "askew", "awful", "badly", "bally", "below", "canny", "cheap", "clean", "clear", "coyly", "daily", "dimly", "dirty", "ditto", "drily", "dryly", "dully", "early", "extra", "false", "fatly", "feyly", "first", "fitly", "forte", "forth", "fresh", "fully", "funny", "gaily", "gayly", "godly", "great", "haply", "heavy", "hella", "hence", "hotly", "icily", "infra", "intl.", "jildi", "jolly", "laxly", "lento", "light", "lowly", "madly", "maybe", "never", "newly", "nobly", "oddly", "often", "other", "ought", "party", "piano", "plain", "plonk", "plumb", "prior", "queer", "quick", "quite", "ramen", "rapid", "redly", "right", "rough", "round", "sadly", "secus", "selly", "sharp", "sheer", "shily", "short", "shyly", "silly", "since", "sleek", "slyly", "small",
-"so-so", "sound", "spang", "srsly", "stark", "still", "stone", "stour", "super", "tally", "tanto", "there", "thick", "tight", "today", "tomoz", "truly", "twice", "under", "utter", "verry", "wanly", "wetly", "where", "wrong", "wryly", "abaft", "aboon", "about", "above", "adown", "afore", "after", "along", "aloof", "among", "below", "circa", "cross", "furth", "minus", "neath", "round", "since", "spite", "under", "until", "aargh", "adieu", "adios", "alack", "aloha", "avast", "bakaw", "basta", "begad", "bless", "blige", "brava", "bravo", "bring", "chook", "damme", "dildo", "ditto", "frick", "fudge", "golly", "gratz", "hallo", "hasta", "havoc", "hella", "hello", "howay", "howdy", "hullo", "huzza", "jesus", "kapow", "loose", "lordy", "marry", "mercy", "night", "plonk", "psych", "quite", "salve", "skoal", "sniff", "sooey", "there", "thiam", "thwap", "tough", "twirp", "viola", "vivat", "wacko", "wahey", "whist", "wilma", "wirra", "woops", "wowie", "yecch", "yeeha", "yeesh", "yowch", "zowie"]
+var dictionary = {};
+var hours = 0, minutes = 0, sec = 0;
+const HOURS_2 = 60*60*2;
 var wordsPanel = document.querySelector(".words");
 let keyboardPanelHTML = document.querySelector('.keyboard');
 
+// INITIAL LOAD -- START ---
+function create_UUID(){
+    var dt = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+}
+
+(function onLoadSuccess(){
+    console.log("calling onload")
+    const user_uuid = localStorage.getItem('user_uuid');
+    if(!user_uuid) {
+        const id = create_UUID();
+        localStorage.setItem('user_uuid', id);
+    }
+    loadUpdateTheDictionary()
+    .then(dictionary => {
+        generateNewWord(dictionary);
+        batchWordGenerator();
+    })
+})();
+
+function timeElapsedInSeconds(timestamp) {
+    endTime = new Date();
+    var timeDiff = endTime - new Date(timestamp); //in ms
+    // strip the ms
+    timeDiff /= 1000;
+  
+    // get seconds 
+    var seconds = Math.round(timeDiff);
+    return seconds;
+}
+
+function didTimeElapse(timestamp) {
+    const seconds = timeElapsedInSeconds(timestamp)
+    console.log(seconds + " seconds");
+    if(seconds >= HOURS_2) {
+        return true;
+    } else {
+        return false;
+    }
+  }
+
+function batchWordGenerator() {
+    // Checks each minute if time elapsed to generate new word.
+    setInterval(() => {
+        let local_gameWord = localStorage.getItem('gameword');
+        if(local_gameWord) {
+            let timestamp = JSON.parse(local_gameWord).timestamp;
+            console.log("didTImeElapse", didTimeElapse(timestamp), timestamp);  
+            if(didTimeElapse(timestamp)) {
+                generateNewWord();
+                alert("Time's Up! Please try new game.");
+                refreshPage();
+            }
+        } else {
+            generateNewWord();
+        }
+    }, 1000*60);
+}
+
+function loadUpdateTheDictionary() {
+    return new Promise((resolve,reject) => {
+        const wordsList = localStorage.getItem('words');
+        if(!wordsList) {
+            console.log("Fetchin")
+            let url = window.origin == 'http://127.0.0.1:5500' ? '/words.json' : '/wordleclone/words.json'
+            fetch(url)
+            .then(data => data.json())
+            .then(res => {
+                let arrayOfWords = res.data.split(',');
+                const wordsObj = arrayOfWords.reduce((acc, word) => {
+                    const keep = word.split('').filter(function(item, pos, self) { return self.indexOf(item) == pos}).length == word.length;
+                    if(keep) {
+                        acc[word] = {attempted: false, value: word}
+                    }
+                    return acc;
+                }, {});
+                localStorage.setItem('words', JSON.stringify(wordsObj));
+                dictionary = wordsObj;
+                resolve(wordsObj);
+            })
+            .catch(err =>
+                reject("Error Loading Dictionary",err)
+            );
+        } else {
+            const dictLocal = localStorage.getItem('words');
+            dictionary = JSON.parse(dictLocal);
+            resolve(dictionary);
+        }
+    })
+    
+}
+// INITIAL LOAD -- END ---
+
+
+// TOAST --- START ----
 function handleLoader(fetchVal){
     fetching = fetchVal;
     const loaderHTML = document.querySelector('.loader');
@@ -29,34 +126,6 @@ function displayPermanentMessage(msg) {
     tryAgainHTML.style.display = 'block';
 }
 
-function isWordValid(word){
-    return new Promise((resolve, reject) => {
-        let capitalizedWordForDict = word.toLowerCase();
-        let validity =  dictionary.indexOf(capitalizedWordForDict);
-        console.log("valididty", validity)
-        if(validity == -1 ) {
-            if(fetching == false) {
-                handleLoader(true);
-                fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+capitalizedWordForDict)
-                .then(res => res.json())
-                .then(res => {
-                    console.log("response", res)
-                    validity = res && res[0].word ? true : false
-                    resolve(validity)
-                    handleLoader(false);
-                })
-                .catch(err => {
-                    reject(false)
-                    handleLoader(false);
-                })
-            }
-        } else {
-            resolve(true);
-        }
-    })
-    // console.log("valid",capitalizedWordForDict, validity)
-}
-
 function displayToast(msg, timer) {
     let errorToast = document.getElementById("error");
     errorToast.innerText = msg;
@@ -64,6 +133,72 @@ function displayToast(msg, timer) {
     setTimeout(() => {
         errorToast.style.display = 'none';
     }, timer || 2000)
+}
+// TOAST --- END ----
+
+function randomProperty(obj) {
+    var keys = Object.keys(obj);
+    return obj[keys[ keys.length * Math.random() << 0]];
+};
+
+function startTimer(timestamp) {
+    setInterval(() => {
+        if(timestamp) {
+            let seconds = HOURS_2 - timeElapsedInSeconds(timestamp);
+            hours = Math.floor(seconds / (60*60));
+            if(hours >= 1) { seconds -= hours*60*60; }
+            minutes = Math.floor(seconds / 60);
+            if(minutes >= 1) { seconds -= minutes*60; }
+            sec = seconds;
+            // console.log("final timer", `0${hours}`.slice(-2), `0${minutes}`.slice(-2), `0${sec}`.slice(-2))
+        }
+        let timerHTML = document.getElementById('timer');
+        timerHTML.innerText = `0${hours}`.slice(-2) +':'+ `0${minutes}`.slice(-2) +':'+ `0${sec}`.slice(-2);
+    }, 1000);
+}
+
+function generateNewWord() {
+    const local_gameWord = localStorage.getItem('gameword');
+    if(local_gameWord) {
+        gameWord = JSON.parse(local_gameWord).value;
+        startTimer(JSON.parse(local_gameWord).timestamp);
+        return;
+    }
+    startTimer();
+    let randomWord = randomProperty(dictionary);
+    gameWord = randomWord && randomWord.value || gameWord;
+    localStorage.setItem('gameword', JSON.stringify({word: gameWord, timestamp: new Date()}));
+}
+
+function fetchWordInfo(word) {
+    return fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+word)
+    .then(res => res.json())
+    .then(res => {
+        validity = res && res[0].word ? true : false
+        return validity;
+    })
+    .catch(err => {
+        return false;
+    })
+}
+
+function isWordValid(word){
+    return new Promise((resolve, reject) => {
+        let capitalizedWordForDict = word.toLowerCase();
+        let validity =  capitalizedWordForDict in dictionary;
+        console.log("valididty", validity)
+        if(!validity) {
+            if(fetching == false) {
+                handleLoader(true);
+                fetchWordInfo(capitalizedWordForDict)
+                .then(res => { resolve(res); })
+                .catch(err => { reject(false); })
+                handleLoader(false)
+            }
+        } else {
+            resolve(true);
+        }
+    })
 }
 
 function checkAndApplyColor(currentRowHTML) {
