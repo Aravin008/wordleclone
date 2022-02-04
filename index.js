@@ -233,6 +233,7 @@ function generateNewWord(forceGenerate= false) {
     gameWord = randomWord && randomWord.value || gameWord;
     localStorage.setItem('gameword', JSON.stringify({word: gameWord, timestamp: new Date()}));
     localStorage.removeItem('currentGameStatus'); //Delete old word game status
+    words = [];
 }
 
 function fetchWordInfo(word) {
