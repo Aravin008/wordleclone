@@ -206,6 +206,9 @@ main .keyboard .action span {
     main .keyboard {
         font-weight: 600;
         font-size: 16px;
+        position: absolute;
+        bottom: 15px;
+        left: calc(50% - 160px);
     }
 
     .words .word-row span {
@@ -224,7 +227,7 @@ main .keyboard .action span {
 
     .tryagain {
         font-size: 12px;
-        padding-top: 0px;
+        padding-top: 0px !important;
     }
     
 }

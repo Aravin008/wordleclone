@@ -222,9 +222,8 @@ function isWordValid(word){
             if(fetching == false) {
                 handleLoader(true);
                 fetchWordInfo(capitalizedWordForDict)
-                .then(res => { resolve(res); })
-                .catch(err => { reject(false); })
-                handleLoader(false)
+                .then(res => { resolve(res);  handleLoader(false);})
+                .catch(err => { reject(false);  handleLoader(false);})
             }
         } else {
             resolve(true);
