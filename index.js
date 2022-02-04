@@ -9,6 +9,7 @@ var maxLengthWord = 5;
 var fetching = false;
 var gameWon = false;
 var dictionary = {};
+var dictionary_famous = {}
 var hours = 0, minutes = 0, sec = 0;
 const HOURS_2 = 60*60*2;
 var wordsPanel = document.querySelector(".words");
@@ -32,6 +33,7 @@ function create_UUID(){
         const id = create_UUID();
         localStorage.setItem('user_uuid', id);
     }
+    loadFamousWords();
     loadUpdateTheDictionary()
     .then(dictionary => {
         console.log("Dictionary loaded!")
@@ -49,6 +51,34 @@ function timeElapsedInSeconds(timestamp) {
     // get seconds 
     var seconds = Math.round(timeDiff);
     return seconds;
+}
+
+function loadFamousWords() {
+    const wordsList = localStorage.getItem('mostused');
+        if(!wordsList) {
+            console.log("Fetchin")
+            let url = window.origin == 'http://127.0.0.1:5500' ? '/mostused.json' : '/wordleclone/mostused.json'
+            fetch(url)
+            .then(data => data.json())
+            .then(res => {
+                let arrayOfWords = res.data.split(',');
+                const wordsObj = arrayOfWords.reduce((acc, word) => {
+                    // const keep = word.split('').filter(function(item, pos, self) { return self.indexOf(item) == pos}).length == word.length;
+                    // if(keep) {
+                        acc[word] = {attempted: false, value: word}
+                    // }
+                    return acc;
+                }, {});
+                localStorage.setItem('mostused', JSON.stringify(wordsObj));
+                dictionary_famous = wordsObj;
+            })
+            .catch(err =>
+                reject("Error Loading Dictionary_famous",err)
+            );
+        } else {
+            const dictLocal = localStorage.getItem('mostused');
+            dictionary_famous = JSON.parse(dictLocal);
+        }
 }
 
 function didTimeElapse(timestamp) {
@@ -109,7 +139,6 @@ function loadUpdateTheDictionary() {
             resolve(dictionary);
         }
     })
-    
 }
 // INITIAL LOAD -- END ---
 
@@ -167,7 +196,7 @@ function generateNewWord(forceGenerate= false) {
         return;
     }
     startTimer();
-    let randomWord = randomProperty(dictionary);
+    let randomWord = randomProperty(dictionary_famous);
     gameWord = randomWord && randomWord.value || gameWord;
     localStorage.setItem('gameword', JSON.stringify({word: gameWord, timestamp: new Date()}));
 }
@@ -222,7 +251,7 @@ function checkMatching(currentRowHTML) {
         Array.from(keysHTML).forEach(function(ele) {
             const keyToCheck = ele.innerText;
             if(keyToCheck.toLowerCase() == letter) {
-                console.log(ele.innerText)
+                // console.log(ele.innerText)
                 if(letter == gameWord[i]){
                     ele.classList.remove('misplace');
                     ele.classList.add('correct');

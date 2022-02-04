@@ -17,15 +17,16 @@ header{
     padding: 18px 0;
 }
 
-header .tryagain {
+.tryagain {
     margin: 0 auto;
     background-color: aliceblue;
-    font-size: 30px;
+    font-size: 20px;
     text-align: center;
     width: 300px;
     border: 2px solid black;
     border-radius: 12px;
     cursor: pointer;
+    padding-top: 5px;
 }
 
 nav {
@@ -73,6 +74,7 @@ main .words{
     flex-direction: column;
     font-size: 30px;
     font-weight: 900;
+    margin-top: 16px;
 }
 
 .words .word-row {
@@ -85,11 +87,13 @@ main .words{
 }
 
 #error {
+    position: absolute;
     background-color: thistle;
     text-align: center;
     border-radius: 4px;
     padding: 5px;
     transition: all .35s ease-in-out;
+    left: calc(50% - 77px);
 }
 
 .words .word-row span {
@@ -115,6 +119,7 @@ main .keyboard {
 main .keyboard .row {
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 main .keyboard .row span {
@@ -172,15 +177,29 @@ main .keyboard .action span {
 }
 
 .game-help ul {
+    margin-top: 10px;
     padding-left: 16px;
+}
+
+.game-help ul li{
+    margin-top: 10px;
+}
+
+.game-help ul li span{
+    padding: 5px;
+}
+
+.container p {
+   text-align:center;
+   font-weight: 600;
+   padding-top: 5px;
 }
 
 
 /* Mobile and Tab  */
 @media only screen and (max-width: 600px) {
     main .keyboard .row span {
-        padding: 6px;
-        margin: 5px;
+        padding: 10px 4px;
         border-radius: 4px;
     }
 
@@ -203,8 +222,9 @@ main .keyboard .action span {
         height: 30px;
     }
 
-    header .tryagain {
-        font-size: 22px;
+    .tryagain {
+        font-size: 12px;
+        padding-top: 0px;
     }
     
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wordle</title>
+    <title>Wordle | Home</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -12,16 +12,18 @@
         <header>
             <nav>
                 <h1>Wordle</h1>
-                <p>Next word in:<span id="timer">02:00:00</span></p>
                 <div>
                     <a href="/wordleclone/"><p class="active">Home</p></a>
                     <a href="/wordleclone/help"><p >Help</p></a>
                 </div>
             </nav>
-            <p id="error" style="display: none;">Its a wrong word. 😕</p>
-            <p id="displayMessage" class="tryagain" style="display: none;" onclick="refreshPage();"> </p>
         </header>
         <hr></hr>
+        <div>
+            <p id="error" style="display: none;">Its a wrong word. 😕</p>
+            <p id="displayMessage" class="tryagain" style="display: none;" onclick="refreshPage();"> </p>
+            <p>Next word in:<span id="timer">02:00:00</span></p>
+        </div>
         <main>
             <section class="words">
                 <div class="word-row active"><span></span><span></span><span></span><span></span><span></span></div>
