@@ -33,6 +33,7 @@ function create_UUID(){
         const id = create_UUID();
         localStorage.setItem('user_uuid', id);
     }
+    loadGameStatus();
     loadFamousWords();
     loadUpdateTheDictionary()
     .then(dictionary => {
@@ -42,12 +43,17 @@ function create_UUID(){
     })
 })();
 
+window.addEventListener('beforeunload', function (e) {
+    // e.preventDefault();
+    // e.returnValue = '';
+    localStorage.setItem('currentGameStatus', JSON.stringify(words))
+})
+
 function timeElapsedInSeconds(timestamp) {
     endTime = new Date();
     var timeDiff = endTime - new Date(timestamp); //in ms
     // strip the ms
     timeDiff /= 1000;
-  
     // get seconds 
     var seconds = Math.round(timeDiff);
     return seconds;
@@ -79,6 +85,33 @@ function loadFamousWords() {
             const dictLocal = localStorage.getItem('mostused');
             dictionary_famous = JSON.parse(dictLocal);
         }
+}
+
+function loadGameStatus() {
+    const gameWordsGuessed = localStorage.getItem('currentGameStatus');
+    if(gameWordsGuessed) {
+        const wordsGuessed = JSON.parse(gameWordsGuessed);
+        words = wordsGuessed;
+        if(wordsGuessed.length > 0) {
+            let i;
+            for(i=0;i<wordsGuessed.length;i++) {
+                const currentRowHTML = wordsPanel.children[i];
+                currentRowHTML.classList.remove('active')
+                const wordToUpdate = wordsGuessed[i].word;
+                const wordStatus = wordsGuessed[i].status;
+                console.log("status", wordToUpdate, wordStatus);
+                console.log("word", wordsGuessed[i], currentRowHTML);
+                for(let j=0;j<5;j++) {
+                    const currentLetterHTML = currentRowHTML.children[j];
+                    currentLetterHTML.innerText = wordToUpdate[j];
+                    currentLetterHTML.classList.add(wordStatus[j]);
+                }
+            }
+            currentRow = i;
+            const currentRowHTML = wordsPanel.children[i];
+            currentRowHTML.classList.add('active')
+        }
+    }
 }
 
 function didTimeElapse(timestamp) {
@@ -199,6 +232,7 @@ function generateNewWord(forceGenerate= false) {
     let randomWord = randomProperty(dictionary_famous);
     gameWord = randomWord && randomWord.value || gameWord;
     localStorage.setItem('gameword', JSON.stringify({word: gameWord, timestamp: new Date()}));
+    localStorage.removeItem('currentGameStatus'); //Delete old word game status
 }
 
 function fetchWordInfo(word) {
@@ -241,6 +275,7 @@ function checkAndApplyColor(currentRowHTML) {
 }
 
 function checkMatching(currentRowHTML) {
+    const guessStatus = {};
     let checkIfAllMatched = 0;
     for(let i=0; i<currentWord.length; i++) {
         let currentLetterHTML = currentRowHTML.children[i];
@@ -264,14 +299,17 @@ function checkMatching(currentRowHTML) {
         if(letter == gameWord[i]){
             checkIfAllMatched += 1;
             currentLetterHTML.classList.add('correct');
+            guessStatus[i] ='correct';
         } else if(gameWord.includes(letter)) {
             currentLetterHTML.classList.add('misplace');
+            guessStatus[i] ='misplace';
         } else {
             currentLetterHTML.classList.add('wrong');
+            guessStatus[i] ='wrong';
         }
     }
     // On successfully parsed the word
-    words.push(currentWord);
+    words.push({word: currentWord, status: guessStatus});
     currentWord = "";
     currentRowHTML.classList.remove('active');//remove active class old row
     // Move to next row after checking.
