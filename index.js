@@ -108,8 +108,10 @@ function loadGameStatus() {
                 }
             }
             currentRow = i;
-            const currentRowHTML = wordsPanel.children[i];
-            currentRowHTML.classList.add('active')
+            if(currentRow<=maxGuessWords) {
+                const currentRowHTML = wordsPanel.children[i];
+                currentRowHTML.classList.add('active')
+            }
         }
     }
 }
