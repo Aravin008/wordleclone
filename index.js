@@ -8,6 +8,7 @@ var maxGuessWords = 6;
 var maxLengthWord = 5;
 var fetching = false;
 var gameWon = false;
+var intervalID = null;
 var dictionary = {};
 var dictionary_famous = {}
 var hours = 0, minutes = 0, sec = 0;
@@ -108,7 +109,7 @@ function loadGameStatus() {
                 }
             }
             currentRow = i;
-            if(currentRow<=maxGuessWords) {
+            if(currentRow>maxGuessWords) {
                 const currentRowHTML = wordsPanel.children[i];
                 currentRowHTML.classList.add('active')
             }
@@ -207,7 +208,7 @@ function randomProperty(obj) {
 };
 
 function startTimer(timestamp) {
-    setInterval(() => {
+    intervalID = setInterval(() => {
         if(timestamp) {
             let seconds = HOURS_2 - timeElapsedInSeconds(timestamp);
             hours = Math.floor(seconds / (60*60));
@@ -216,6 +217,12 @@ function startTimer(timestamp) {
             if(minutes >= 1) { seconds -= minutes*60; }
             sec = seconds;
             // console.log("final timer", `0${hours}`.slice(-2), `0${minutes}`.slice(-2), `0${sec}`.slice(-2))
+        }
+        if(hours<0 || minutes < 0 || sec <0) {
+            hours = 0
+            minutes = 0
+            sec = 0
+            clearInterval(intervalID)
         }
         let timerHTML = document.getElementById('timer');
         timerHTML.innerText = `0${hours}`.slice(-2) +':'+ `0${minutes}`.slice(-2) +':'+ `0${sec}`.slice(-2);
