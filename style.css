@@ -104,8 +104,8 @@ main .words{
     border: 2px solid slategrey;
     border-radius: 5px;
     margin: 4px;
-    min-width: 30px;
-    min-height: 35px;
+    min-width: 28px;
+    min-height: 28px;
     text-align: center;
     display: flex;
     align-items: center;
@@ -320,8 +320,8 @@ main .words{
         font-size: .7em;
         font-weight: 600;
         display: flex;
-        height: 9vmin;
-        width: 9vmin;
+        height: 8vmin;
+        width: 8vmin;
         align-items: center;
         justify-content: center;
     }
