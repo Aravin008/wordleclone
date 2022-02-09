@@ -40,7 +40,7 @@ function create_UUID(){
     .then(dictionary => {
         console.log("Dictionary loaded!")
         generateNewWord();
-        batchWordGenerator();
+        // batchWordGenerator();
     })
 })();
 
@@ -100,12 +100,15 @@ function loadGameStatus() {
                 currentRowHTML.classList.remove('active')
                 const wordToUpdate = wordsGuessed[i].word;
                 const wordStatus = wordsGuessed[i].status;
-                console.log("status", wordToUpdate, wordStatus);
-                console.log("word", wordsGuessed[i], currentRowHTML);
-                for(let j=0;j<5;j++) {
+                for(let j=0, currects = 0;j<5;j++) {
                     const currentLetterHTML = currentRowHTML.children[j];
                     currentLetterHTML.innerText = wordToUpdate[j];
                     currentLetterHTML.classList.add(wordStatus[j]);
+                    currects += wordStatus[j] == 'correct' ? 1 : 0;
+                    if(currects == maxLengthWord) {
+                        gameWon = true;
+                        currentRow = maxGuessWords
+                    }
                 }
             }
             currentRow = i;
@@ -125,24 +128,6 @@ function didTimeElapse(timestamp) {
     } else {
         return false;
     }
-  }
-
-function batchWordGenerator() {
-    // Checks each minute if time elapsed to generate new word.
-    setInterval(() => {
-        let local_gameWord = localStorage.getItem('gameword');
-        if(local_gameWord) {
-            let timestamp = JSON.parse(local_gameWord).timestamp;
-            console.log("didTImeElapse", didTimeElapse(timestamp), timestamp);  
-            if(didTimeElapse(timestamp)) {
-                generateNewWord(true);
-                alert("Time's Up! Please try new game.");
-                refreshPage();
-            }
-        } else {
-            generateNewWord();
-        }
-    }, 1000*60);
 }
 
 function loadUpdateTheDictionary() {
@@ -208,28 +193,37 @@ function randomProperty(obj) {
 };
 
 function startTimer(timestamp) {
-    intervalID = setInterval(() => {
-        if(timestamp) {
-            let seconds = HOURS_2 - timeElapsedInSeconds(timestamp);
-            hours = Math.floor(seconds / (60*60));
-            if(hours >= 1) { seconds -= hours*60*60; }
-            minutes = Math.floor(seconds / 60);
-            if(minutes >= 1) { seconds -= minutes*60; }
-            sec = seconds;
-            // console.log("final timer", `0${hours}`.slice(-2), `0${minutes}`.slice(-2), `0${sec}`.slice(-2))
-        }
-        if(hours<0 || minutes < 0 || sec <0) {
-            hours = 0
-            minutes = 0
-            sec = 0
-            clearInterval(intervalID)
-        }
-        let timerHTML = document.getElementById('timer');
-        timerHTML.innerText = `0${hours}`.slice(-2) +':'+ `0${minutes}`.slice(-2) +':'+ `0${sec}`.slice(-2);
-    }, 1000);
+    if(!intervalID) {
+        console.log("timer is not set lets set", intervalID)
+        intervalID = setInterval(() => {
+            if(timestamp) {
+                console.log("time stamp")
+                let seconds = HOURS_2 - timeElapsedInSeconds(timestamp);
+                hours = Math.floor(seconds / (60*60));
+                if(hours >= 1) { seconds -= hours*60*60; }
+                minutes = Math.floor(seconds / 60);
+                if(minutes >= 1) { seconds -= minutes*60; }
+                sec = seconds;
+                // console.log("final timer", `0${hours}`.slice(-2), `0${minutes}`.slice(-2), `0${sec}`.slice(-2))
+            }
+            if(hours<0 || minutes < 0 || sec <0) {
+                console.log("something is les than zero")
+                hours = 0
+                minutes = 0
+                sec = 0
+                intervalID = clearInterval(intervalID);
+                console.log("intevalID on 00000", intervalID, window.intervalID)
+                localStorage.removeItem('gameword')
+                generateNewWord();
+            }
+            let timerHTML = document.getElementById('timer');
+            timerHTML.innerText = `0${hours}`.slice(-2) +':'+ `0${minutes}`.slice(-2) +':'+ `0${sec}`.slice(-2);
+        }, 1000);
+    }
 }
 
 function generateNewWord(forceGenerate= false) {
+    console.log("generate New word", intervalID)
     const local_gameWord = localStorage.getItem('gameword');
     if(local_gameWord && !forceGenerate) {
         const gameWordobj = JSON.parse(local_gameWord);
@@ -237,12 +231,13 @@ function generateNewWord(forceGenerate= false) {
         startTimer(gameWordobj.timestamp);
         return;
     }
-    startTimer();
     let randomWord = randomProperty(dictionary_famous);
     gameWord = randomWord && randomWord.value || gameWord;
-    localStorage.setItem('gameword', JSON.stringify({word: gameWord, timestamp: new Date()}));
+    const timeStampNewWord = new Date();
+    localStorage.setItem('gameword', JSON.stringify({word: gameWord, timestamp: timeStampNewWord}));
     localStorage.removeItem('currentGameStatus'); //Delete old word game status
     words = [];
+    startTimer(timeStampNewWord);
 }
 
 function fetchWordInfo(word) {
