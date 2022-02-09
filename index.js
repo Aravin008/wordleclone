@@ -212,9 +212,10 @@ function startTimer(timestamp) {
                 minutes = 0
                 sec = 0
                 intervalID = clearInterval(intervalID);
-                console.log("intevalID on 00000", intervalID, window.intervalID)
                 localStorage.removeItem('gameword')
                 generateNewWord();
+                alert("Time out! Game over!!")
+                refreshPage();
             }
             let timerHTML = document.getElementById('timer');
             timerHTML.innerText = `0${hours}`.slice(-2) +':'+ `0${minutes}`.slice(-2) +':'+ `0${sec}`.slice(-2);
