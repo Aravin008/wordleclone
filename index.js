@@ -356,7 +356,7 @@ async function handleKeyboard(e){
         }
 
         // For delete function
-        if(key == 'Delete') {
+        if(key == 'Del') {
             if(currentWord.length == 0) {
                 return;
             }
@@ -367,7 +367,7 @@ async function handleKeyboard(e){
         }
 
         // For enter function
-        if(key == 'Enter') {
+        if(key == 'Ent') {
             if(currentWord.length < maxLengthWord) {
                 return;
             }
