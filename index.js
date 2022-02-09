@@ -90,8 +90,11 @@ function loadFamousWords() {
 
 function loadGameStatus() {
     const gameWordsGuessed = localStorage.getItem('currentGameStatus');
-    if(gameWordsGuessed) {
+    const gameWordToGuess = localStorage.getItem('gameword')
+    if(gameWordsGuessed && gameWord) {
         const wordsGuessed = JSON.parse(gameWordsGuessed);
+        const wordToGuessObj = JSON.parse(gameWordToGuess);
+        const wordToGuess = wordToGuessObj && wordToGuessObj.word;
         words = wordsGuessed;
         if(wordsGuessed.length > 0) {
             let i;
@@ -101,6 +104,7 @@ function loadGameStatus() {
                 const wordToUpdate = wordsGuessed[i].word;
                 const wordStatus = wordsGuessed[i].status;
                 for(let j=0, currects = 0;j<5;j++) {
+                    colorKeyboardLayout(wordToUpdate[j].toLowerCase(), wordToGuess[j], wordToGuess)
                     const currentLetterHTML = currentRowHTML.children[j];
                     currentLetterHTML.innerText = wordToUpdate[j];
                     currentLetterHTML.classList.add(wordStatus[j]);
@@ -112,7 +116,7 @@ function loadGameStatus() {
                 }
             }
             currentRow = i;
-            if(currentRow>maxGuessWords) {
+            if(currentRow<maxGuessWords) {
                 const currentRowHTML = wordsPanel.children[i];
                 currentRowHTML.classList.add('active')
             }
@@ -285,24 +289,11 @@ function checkMatching(currentRowHTML) {
     let checkIfAllMatched = 0;
     for(let i=0; i<currentWord.length; i++) {
         let currentLetterHTML = currentRowHTML.children[i];
-        let keysHTML = keyboardPanelHTML.querySelectorAll('span');
         let letter = currentWord[i].toLowerCase();
+        let gameLetter = gameWord[i]
         // console.log("letter", letter, gameWord[i], letter == gameWord[i]);
-        Array.from(keysHTML).forEach(function(ele) {
-            const keyToCheck = ele.innerText;
-            if(keyToCheck.toLowerCase() == letter) {
-                // console.log(ele.innerText)
-                if(letter == gameWord[i]){
-                    ele.classList.remove('misplace');
-                    ele.classList.add('correct');
-                } else if(gameWord.includes(letter)) {
-                    ele.classList.add('misplace');
-                } else {
-                    ele.classList.add('wrong');
-                }
-            }
-        });
-        if(letter == gameWord[i]){
+        colorKeyboardLayout(letter, gameLetter, gameWord);
+        if(letter == gameLetter){
             checkIfAllMatched += 1;
             currentLetterHTML.classList.add('correct');
             guessStatus[i] ='correct';
@@ -332,6 +323,25 @@ function checkMatching(currentRowHTML) {
         currentRowHTML = wordsPanel.children[currentRow];
         currentRowHTML.classList.add('active');//Add active class new row
     }
+}
+
+function colorKeyboardLayout(letter, gameLetter, gameWord) {
+    console.log("Color",letter, gameLetter, gameWord )
+    let keysHTML = keyboardPanelHTML.querySelectorAll('span');
+    Array.from(keysHTML).forEach(function(ele) {
+        const keyToCheck = ele.innerText;
+        if(keyToCheck.toLowerCase() == letter) {
+            // console.log(ele.innerText)
+            if(letter == gameLetter){
+                ele.classList.remove('misplace');
+                ele.classList.add('correct');
+            } else if(gameWord.includes(letter)) {
+                ele.classList.add('misplace');
+            } else {
+                ele.classList.add('wrong');
+            }
+        }
+    });
 }
 
 function refreshPage(e) {
