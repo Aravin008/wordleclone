@@ -13,6 +13,13 @@ var dictionary = {};
 var dictionary_famous = {}
 var hours = 0, minutes = 0, sec = 0;
 const HOURS_2 = 60*60*2;
+let gameScore = {
+    totalGames: 0,
+    totalGamesWon: 0,
+    currentStreak: 0,
+    maxStreak: 0,
+    gamesWonScore:{ 1:0, 2:0, 3:0, 4:0, 5:0, 6:0}
+}
 var wordsPanel = document.querySelector(".words");
 let keyboardPanelHTML = document.querySelector('.keyboard');
 
@@ -42,6 +49,7 @@ function create_UUID(){
         generateNewWord();
         // batchWordGenerator();
     })
+    loadGameScore();
 })();
 
 window.addEventListener('beforeunload', function (e) {
@@ -58,6 +66,45 @@ function timeElapsedInSeconds(timestamp) {
     // get seconds 
     var seconds = Math.round(timeDiff);
     return seconds;
+}
+
+// game score
+function loadGameScore(){
+    let gameScoreLocal = localStorage.getItem('gamescore');
+    if(gameScoreLocal){
+        gameScore = JSON.parse(gameScoreLocal);
+    } else {
+        localStorage.setItem('gamescore', JSON.stringify(gameScore));
+    }
+}
+
+function handleShare() {
+    if(window.navigator && navigator.share){
+        navigator.share({
+            url: 'https://aravin008.github.io/wordleclone/',
+            text: 'Wordle Clone Game for Fun. Share and play unlimited games.',
+            title: 'Wordle Clone'
+        });
+        return;
+    }
+    window.open('https://api.whatsapp.com/send?text='+encodeURIComponent('https://aravin008.github.io/wordleclone/ Wordle Clone'))
+}
+
+function updateGameScore(isItWin=false, winningAttempt){
+    if(isItWin){
+        gameScore.totalGames += 1;
+        gameScore.totalGamesWon += 1;
+        gameScore.currentStreak += 1;
+        if(gameScore.currentStreak > gameScore.maxStreak) {
+            gameScore.maxStreak = gameScore.currentStreak;
+        }
+        gameScore.gamesWonScore[winningAttempt] += 1;
+    } else {
+        gameScore.totalGames += 1;
+        gameScore.currentStreak = 0;
+    }
+    localStorage.setItem('gamescore', JSON.stringify(gameScore));
+    handleScoreCardDisplay(undefined, 'flex')
 }
 
 function loadFamousWords() {
@@ -116,7 +163,7 @@ function loadGameStatus() {
                 }
             }
             currentRow = i;
-            if(currentRow<maxGuessWords) {
+            if(currentRow<maxGuessWords && !gameWon) {
                 const currentRowHTML = wordsPanel.children[i];
                 currentRowHTML.classList.add('active')
             }
@@ -198,10 +245,8 @@ function randomProperty(obj) {
 
 function startTimer(timestamp) {
     if(!intervalID) {
-        console.log("timer is not set lets set", intervalID)
         intervalID = setInterval(() => {
             if(timestamp) {
-                console.log("time stamp")
                 let seconds = HOURS_2 - timeElapsedInSeconds(timestamp);
                 hours = Math.floor(seconds / (60*60));
                 if(hours >= 1) { seconds -= hours*60*60; }
@@ -211,14 +256,13 @@ function startTimer(timestamp) {
                 // console.log("final timer", `0${hours}`.slice(-2), `0${minutes}`.slice(-2), `0${sec}`.slice(-2))
             }
             if(hours<0 || minutes < 0 || sec <0) {
-                console.log("something is les than zero")
                 hours = 0
                 minutes = 0
                 sec = 0
                 intervalID = clearInterval(intervalID);
                 localStorage.removeItem('gameword')
-                generateNewWord();
                 alert("Time out! Game over!!")
+                generateNewWord();
                 refreshPage();
             }
             let timerHTML = document.getElementById('timer');
@@ -228,7 +272,6 @@ function startTimer(timestamp) {
 }
 
 function generateNewWord(forceGenerate= false) {
-    console.log("generate New word", intervalID)
     const local_gameWord = localStorage.getItem('gameword');
     if(local_gameWord && !forceGenerate) {
         const gameWordobj = JSON.parse(local_gameWord);
@@ -275,6 +318,7 @@ function isWordValid(word){
     })
 }
 
+
 function checkAndApplyColor(currentRowHTML) {
     currentWord.map((letter, index) => {
         if(letter == gameWord[index]){
@@ -312,13 +356,15 @@ function checkMatching(currentRowHTML) {
     // Move to next row after checking.
     currentRow += 1;
     if(checkIfAllMatched == maxLengthWord) {
-        //gameWon 
+        //gameWon update the status
         gameWon = true;
         displayPermanentMessage('You guessed it right! 🥳' + '  click to play again!');
+        updateGameScore(true, currentRow);
         return;
     }
     if(currentRow == maxGuessWords) {
         displayPermanentMessage('Try again! 😕');
+        updateGameScore(false, -1);
     } else {
         currentRowHTML = wordsPanel.children[currentRow];
         currentRowHTML.classList.add('active');//Add active class new row
@@ -326,7 +372,6 @@ function checkMatching(currentRowHTML) {
 }
 
 function colorKeyboardLayout(letter, gameLetter, gameWord) {
-    console.log("Color",letter, gameLetter, gameWord )
     let keysHTML = keyboardPanelHTML.querySelectorAll('span');
     Array.from(keysHTML).forEach(function(ele) {
         const keyToCheck = ele.innerText;
@@ -342,6 +387,41 @@ function colorKeyboardLayout(letter, gameLetter, gameWord) {
             }
         }
     });
+}
+
+function handleScoreCardDisplay(e, displayStyle) {
+    let scoreCardOverlayHTML = document.getElementById('scorecard');
+    if(displayStyle == 'flex') {
+        let scoreCardHTML = scoreCardOverlayHTML.firstElementChild;
+        let statsHTML = scoreCardHTML.querySelector('ul');
+        let statsLiHTML = statsHTML.children;
+        let guessDistHTML = scoreCardHTML.querySelector('.guess-dist');
+        let progressStatusHTML = guessDistHTML.children;
+        // Update Stats
+        Array.from(statsLiHTML).forEach( (item, index) => {
+            let value = 0;
+            let liItemHTML = item.querySelector('span');
+            if(index == 0) {value = gameScore.totalGames;}
+            if(index == 1) {value = Math.floor((gameScore.totalGamesWon / gameScore.totalGames)*100);}
+            if(index == 2) {value = gameScore.currentStreak;}
+            if(index == 3) {value = gameScore.maxStreak;}
+            liItemHTML.innerHTML = value;
+        })
+        //Update the guess wise percentage and stats
+        Array.from(progressStatusHTML).forEach( (item, index) => {
+            let scoreDivHTML = item.lastElementChild;
+            let val = gameScore.gamesWonScore[index+1];
+            let totalWon = gameScore.totalGamesWon;
+            let percentage = 0;
+            if(val != 0){
+                percentage = Math.floor((val / totalWon)*100);
+            }
+            scoreDivHTML.style.width = percentage || '5%'
+            scoreDivHTML.innerHTML = val;
+        })
+        console.log('stats', statsHTML, scoreCardHTML)
+    }
+    scoreCardOverlayHTML.style.display = displayStyle;
 }
 
 function refreshPage(e) {
