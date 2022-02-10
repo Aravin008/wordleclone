@@ -12,6 +12,7 @@ var intervalID = null;
 var dictionary = {};
 var dictionary_famous = {}
 var hours = 0, minutes = 0, sec = 0;
+const FLIP_TIME = 400;
 const HOURS_2 = 60*60*2;
 let gameScore = {
     totalGames: 0,
@@ -340,24 +341,24 @@ function checkMatching(currentRowHTML) {
         // console.log("letter", letter, gameWord[i], letter == gameWord[i]);
         setTimeout(() => {
             colorKeyboardLayout(letter, gameLetter, gameWord);
-        }, 1000*i)
+        }, FLIP_TIME*i)
 
         if(letter == gameLetter){
             checkIfAllMatched += 1;
             setTimeout(() => {
                 currentLetterHTML.classList.add('correct');
                 guessStatus[i] ='correct';
-            }, 1000*i)
+            }, FLIP_TIME*i)
         } else if(gameWord.includes(letter)) {
             setTimeout(() => {
                 currentLetterHTML.classList.add('misplace');
                 guessStatus[i] ='misplace';
-            }, 1000*i)
+            }, FLIP_TIME*i)
         } else {
             setTimeout(() => {
                 currentLetterHTML.classList.add('wrong');
                 guessStatus[i] ='wrong';
-            }, 1000*i)
+            }, FLIP_TIME*i)
         }
     }
     console.log("check matched", checkIfAllMatched)
@@ -374,7 +375,7 @@ function checkMatching(currentRowHTML) {
             gameWon = true;
             displayPermanentMessage('You guessed it right! 🥳' + '  click to play again!');
             updateGameScore(true, currentRow);
-        }, 1000*5)
+        }, FLIP_TIME*5)
         return;
     }
     if(currentRow == maxGuessWords) {
