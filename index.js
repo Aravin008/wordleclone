@@ -417,7 +417,7 @@ function handleScoreCardDisplay(e, displayStyle) {
             let value = 0;
             let liItemHTML = item.querySelector('span');
             if(index == 0) {value = gameScore.totalGames;}
-            if(index == 1) {value = Math.floor((gameScore.totalGamesWon / gameScore.totalGames)*100);}
+            if(index == 1) {value = gameScore.totalGamesWon ? Math.floor((gameScore.totalGamesWon / gameScore.totalGames)*100) : 0;}
             if(index == 2) {value = gameScore.currentStreak;}
             if(index == 3) {value = gameScore.maxStreak;}
             liItemHTML.innerHTML = value;
