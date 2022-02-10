@@ -22,11 +22,14 @@ header{
     background-color: aliceblue;
     font-size: 20px;
     text-align: center;
-    width: 300px;
+    /* width: 300px; */
     border: 2px solid black;
     border-radius: 12px;
     cursor: pointer;
     padding-top: 5px;
+    position: absolute;
+    width: 60%;
+    left: 20%;
 }
 
 nav {
@@ -150,16 +153,19 @@ main .words{
 .wrong {
     background-color: #787c7e !important;
     color: white;
+    transition: background-color 1s ease,color 1s ease;
 }
 
 .correct {
     background-color: green !important;
     color: white;
+    transition: background-color 1s ease,color 1s ease;
 }
 
 .misplace {
     background-color: goldenrod !important;
     color: white;
+    transition: background-color 1s ease,color 1s ease;
 }
 
 .loader {

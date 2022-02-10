@@ -150,15 +150,17 @@ function loadGameStatus() {
                 currentRowHTML.classList.remove('active')
                 const wordToUpdate = wordsGuessed[i].word;
                 const wordStatus = wordsGuessed[i].status;
-                for(let j=0, currects = 0;j<5;j++) {
-                    colorKeyboardLayout(wordToUpdate[j].toLowerCase(), wordToGuess[j], wordToGuess)
-                    const currentLetterHTML = currentRowHTML.children[j];
-                    currentLetterHTML.innerText = wordToUpdate[j];
-                    currentLetterHTML.classList.add(wordStatus[j]);
-                    currects += wordStatus[j] == 'correct' ? 1 : 0;
-                    if(currects == maxLengthWord) {
-                        gameWon = true;
-                        currentRow = maxGuessWords
+                if(wordToUpdate && wordStatus) {
+                    for(let j=0, currects = 0;j<5;j++) {
+                        colorKeyboardLayout(wordToUpdate[j].toLowerCase(), wordToGuess[j], wordToGuess)
+                        const currentLetterHTML = currentRowHTML.children[j];
+                        currentLetterHTML.innerText = wordToUpdate[j];
+                        currentLetterHTML.classList.add(wordStatus[j]);
+                        currects += wordStatus[j] == 'correct' ? 1 : 0;
+                        if(currects == maxLengthWord) {
+                            gameWon = true;
+                            currentRow = maxGuessWords
+                        }
                     }
                 }
             }
@@ -336,19 +338,29 @@ function checkMatching(currentRowHTML) {
         let letter = currentWord[i].toLowerCase();
         let gameLetter = gameWord[i]
         // console.log("letter", letter, gameWord[i], letter == gameWord[i]);
-        colorKeyboardLayout(letter, gameLetter, gameWord);
+        setTimeout(() => {
+            colorKeyboardLayout(letter, gameLetter, gameWord);
+        }, 1000*i)
+
         if(letter == gameLetter){
             checkIfAllMatched += 1;
-            currentLetterHTML.classList.add('correct');
-            guessStatus[i] ='correct';
+            setTimeout(() => {
+                currentLetterHTML.classList.add('correct');
+                guessStatus[i] ='correct';
+            }, 1000*i)
         } else if(gameWord.includes(letter)) {
-            currentLetterHTML.classList.add('misplace');
-            guessStatus[i] ='misplace';
+            setTimeout(() => {
+                currentLetterHTML.classList.add('misplace');
+                guessStatus[i] ='misplace';
+            }, 1000*i)
         } else {
-            currentLetterHTML.classList.add('wrong');
-            guessStatus[i] ='wrong';
+            setTimeout(() => {
+                currentLetterHTML.classList.add('wrong');
+                guessStatus[i] ='wrong';
+            }, 1000*i)
         }
     }
+    console.log("check matched", checkIfAllMatched)
     // On successfully parsed the word
     words.push({word: currentWord, status: guessStatus});
     currentWord = "";
@@ -357,9 +369,12 @@ function checkMatching(currentRowHTML) {
     currentRow += 1;
     if(checkIfAllMatched == maxLengthWord) {
         //gameWon update the status
-        gameWon = true;
-        displayPermanentMessage('You guessed it right! 🥳' + '  click to play again!');
-        updateGameScore(true, currentRow);
+        setTimeout(()=>{
+            console.log("display the Win message")
+            gameWon = true;
+            displayPermanentMessage('You guessed it right! 🥳' + '  click to play again!');
+            updateGameScore(true, currentRow);
+        }, 1000*5)
         return;
     }
     if(currentRow == maxGuessWords) {
