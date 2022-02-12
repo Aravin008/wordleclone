@@ -109,6 +109,16 @@ function updateGameScore(isItWin=false, winningAttempt){
     handleScoreCardDisplay(undefined, 'flex')
 }
 
+function handleDisplayOverlay(event, displayString, type) {
+    if(type == 'help') {
+        let helpHTML = document.getElementById('help');
+        helpHTML.style.display = displayString
+    }
+    if(type = 'setting') {
+        // setting display
+    }
+}
+
 function loadFamousWords() {
     const wordsList = localStorage.getItem('mostused');
         if(!wordsList) {
@@ -395,7 +405,7 @@ function checkMatching(currentRowHTML) {
                             gameWon = true;
                             displayPermanentMessage('You guessed it right! 🥳' + '  click to play again!');
                             updateGameScore(true, currentRow);
-                        }, FLIP_TIME*3)
+                        }, FLIP_TIME*2)
                     }
                 }, 200*index)
             })
@@ -451,14 +461,18 @@ function handleScoreCardDisplay(e, displayStyle) {
         })
         //Update the guess wise percentage and stats
         Array.from(progressStatusHTML).forEach( (item, index) => {
+            let gameScoreList = Object.values(gameScore.gamesWonScore);
+            let baseScore = gameScoreList && gameScoreList.reduce((max, item) => max < item ? item : max, 0);
+            console.log('base', baseScore, gameScoreList)
             let scoreDivHTML = item.lastElementChild;
             let val = gameScore.gamesWonScore[index+1];
             let totalWon = gameScore.totalGamesWon;
             let percentage = 0;
             if(val != 0){
-                percentage = Math.floor((val / totalWon)*100);
+                percentage = Math.floor((val / baseScore)*100);
             }
-            scoreDivHTML.style.width = percentage || '5%'
+            console.log("percentage", percentage, scoreDivHTML)
+            scoreDivHTML.style.width = percentage ? (percentage + '%') : '5%';
             scoreDivHTML.innerHTML = val;
         })
         console.log('stats', statsHTML, scoreCardHTML)

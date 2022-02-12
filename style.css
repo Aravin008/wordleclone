@@ -48,7 +48,11 @@ nav div{
     display: flex;
     width: 130px;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
+}
+
+nav div a {
+    padding: 0 5px;
 }
 
 nav p {
@@ -196,10 +200,11 @@ main .words{
 
 /* Help page */
 .game-help {
-    margin-top: 10px;
     background-color: cadetblue;
     color: white;
-    padding: 25px 0px 25px 25px;
+    padding: 25px;
+    position: relative;
+    margin: 0 20px;
 }
 
 .game-help ul {
@@ -209,6 +214,7 @@ main .words{
 
 .game-help ul li{
     margin-top: 10px;
+    line-height: 25px;
 }
 
 .game-help ul li span{
@@ -250,14 +256,16 @@ main .words{
     padding: 10px;
 }
 
-.overlay .score .close {
+.overlay .close {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 5px
+    padding: 10px;
+    height: 24px;
+    width: 24px;
 }
 
-.overlay ul {
+.overlay .score ul {
     display: flex;
     justify-content: space-between;
 }
