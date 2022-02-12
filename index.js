@@ -200,7 +200,7 @@ function loadGameStatus() {
 
 function didTimeElapse(timestamp) {
     const seconds = timeElapsedInSeconds(timestamp)
-    console.log(seconds + " seconds");
+    // console.log(seconds + " seconds");
     if(seconds >= HOURS_2) {
         return true;
     } else {
@@ -331,7 +331,7 @@ function isWordValid(word){
     return new Promise((resolve, reject) => {
         let capitalizedWordForDict = word.toLowerCase();
         let validity =  capitalizedWordForDict in dictionary;
-        console.log("valididty", validity)
+        // console.log("valididty", validity)
         if(!validity) {
             if(fetching == false) {
                 handleLoader(true);
@@ -385,7 +385,7 @@ function checkMatching(currentRowHTML) {
             }, FLIP_TIME*i)
         }
     }
-    console.log("check matched", checkIfAllMatched)
+    // console.log("check matched", checkIfAllMatched)
     // On successfully parsed the word
     words.push({word: currentWord, status: guessStatus});
     currentWord = "";
@@ -463,7 +463,6 @@ function handleScoreCardDisplay(e, displayStyle) {
         Array.from(progressStatusHTML).forEach( (item, index) => {
             let gameScoreList = Object.values(gameScore.gamesWonScore);
             let baseScore = gameScoreList && gameScoreList.reduce((max, item) => max < item ? item : max, 0);
-            console.log('base', baseScore, gameScoreList)
             let scoreDivHTML = item.lastElementChild;
             let val = gameScore.gamesWonScore[index+1];
             let totalWon = gameScore.totalGamesWon;
@@ -471,11 +470,9 @@ function handleScoreCardDisplay(e, displayStyle) {
             if(val != 0){
                 percentage = Math.floor((val / baseScore)*100);
             }
-            console.log("percentage", percentage, scoreDivHTML)
             scoreDivHTML.style.width = percentage ? (percentage + '%') : '5%';
             scoreDivHTML.innerHTML = val;
         })
-        console.log('stats', statsHTML, scoreCardHTML)
     }
     scoreCardOverlayHTML.style.display = displayStyle;
 }
@@ -528,11 +525,11 @@ async function handleKeyboard(e){
                 validWord = false;
             }
             if(!validWord){
-                console.log("Not a valid word", currentWord);
+                // console.log("Not a valid word", currentWord);
                 displayToast("Not a valid Word! 😬", 2000)
                 return;
             }
-            console.log("Its valid word")
+            // console.log("Its valid word")
             checkMatching(currentRowHTML);
         }
     }
