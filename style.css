@@ -311,6 +311,11 @@ main .words{
     color: white;
 }
 
+#enter-btn,#delete-btn {
+    font-size: 20px;
+    padding: 0 14px;
+}
+
 /* Mobile and Tab  */
 @media only screen and (max-width: 600px) {
     .keyboard .row span {
@@ -351,11 +356,21 @@ main .words{
         font-size: 12px;
         padding-top: 0px !important;
     }
+
+    #delete-btn, #enter-btn {
+        font-size: 12px;
+    }
     
 }
 
 @keyframes flipLetter {
     50% {transform: rotate3d(1, 0, 0, 90deg);}
+}
+
+@keyframes upNdown {
+    25% {transform: translateY(-15px);}
+    50% {transform: translateY(-30px);}
+    75% {transform: translateY(-15px);}
 }
 
 .noselect {

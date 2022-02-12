@@ -164,6 +164,14 @@ function loadGameStatus() {
                             currentRow = maxGuessWords;
                             let timerHTML = document.getElementById('time');
                             timerHTML.style.display = 'block';
+                            setTimeout(() => {
+                                let animateItemsHTML = currentRowHTML.children;
+                                Array.from(animateItemsHTML).forEach((ele,index) => {
+                                    setTimeout(() => {
+                                        ele.style.animation = "upNdown .4s ease-in-out";
+                                    }, 200*index)
+                                })
+                            }, 1000)
                         }
                     }
                 }
@@ -376,12 +384,22 @@ function checkMatching(currentRowHTML) {
     currentRow += 1;
     if(checkIfAllMatched == maxLengthWord) {
         //gameWon update the status
-        setTimeout(()=>{
-            console.log("display the Win message")
-            gameWon = true;
-            displayPermanentMessage('You guessed it right! 🥳' + '  click to play again!');
-            updateGameScore(true, currentRow);
-        }, FLIP_TIME*7)
+        setTimeout(()=> {
+            let animateItemsHTML = currentRowHTML.children;
+            Array.from(animateItemsHTML).forEach((ele,index) => {
+                setTimeout(() => {
+                    ele.style.animation = "upNdown .4s ease-in-out";
+                    if(index == 4) {
+                        // Udpate and display the Messages and scoreboard
+                        setTimeout(()=>{
+                            gameWon = true;
+                            displayPermanentMessage('You guessed it right! 🥳' + '  click to play again!');
+                            updateGameScore(true, currentRow);
+                        }, FLIP_TIME*3)
+                    }
+                }, 200*index)
+            })
+        },FLIP_TIME*7)
         return;
     }
     if(currentRow == maxGuessWords) {
@@ -471,7 +489,7 @@ async function handleKeyboard(e){
         }
 
         // For delete function
-        if(key == 'Del') {
+        if(key == 'Delete') {
             if(currentWord.length == 0) {
                 return;
             }
@@ -482,7 +500,7 @@ async function handleKeyboard(e){
         }
 
         // For enter function
-        if(key == 'Ent') {
+        if(key == 'Enter') {
             if(currentWord.length < maxLengthWord) {
                 return;
             }
