@@ -78,7 +78,7 @@ main {
 main .words{
     display: flex;
     flex-direction: column;
-    font-size: 30px;
+    font-size: 24px;
     font-weight: 900;
     margin-top: 16px;
 }
@@ -113,6 +113,8 @@ main .words{
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 5vh;
+    width: 5vh;
 }
 
 .keyboard {
@@ -123,6 +125,10 @@ main .words{
     text-align: center;
     font-weight: 900;
     font-size: 20px;
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    width: 100vw;
 }
 
 .keyboard .row {
