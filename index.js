@@ -453,7 +453,7 @@ function refreshPage(e) {
 }
 
 async function handleKeyboard(e){
-    if(gameWon) {
+    if(gameWon || currentRow >= maxGuessWords) {
         return;
     }
     let item = e.target
