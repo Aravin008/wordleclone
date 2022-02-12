@@ -14,8 +14,11 @@
     <meta property="og:url" content="https://aravin008.github.io/wordleclone/" />
     <meta property="og:type" content="article"></meta>
     <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@600&display=swap" rel="stylesheet">
 </head>
-<body>
+<body style="font-family: 'Libre Franklin', sans-serif;">
     <div class="container">
         <header>
             <nav>
@@ -34,7 +37,7 @@
         <div>
             <p id="error" style="display: none;">Its a wrong word. 😕</p>
             <p id="displayMessage" class="tryagain" style="display: none;" onclick="refreshPage();"> </p>
-            <p id="time" style="display:none">Next word in:<span id="timer">--:--:--</span></p>
+            <p id="time" style="display:none;background-color:#0f4e5d;color:white;padding-bottom:5px;">NEXT WORDLE :  <span id="timer">--:--:--</span></p>
         </div>
         <main>
             <section class="words">
@@ -49,7 +52,7 @@
         <section class="keyboard noselect" onclick="handleKeyboard(event);" >
             <div class="row"><span>Q</span><span>W</span><span>E</span><span>R</span><span>T</span><span>Y</span><span>U</span><span>I</span><span>O</span><span>P</span></div>
             <div class="row"><span>A</span><span>S</span><span>D</span><span>F</span><span>G</span><span>H</span><span>J</span><span>K</span><span>L</span></div>
-            <div class="row"><span>Ent</span><span>Z</span><span>X</span><span>C</span><span>V</span><span>B</span><span>N</span><span>M</span><span>Del</span></div>
+            <div class="row"><span style="padding: 0 10px">Ent</span><span>Z</span><span>X</span><span>C</span><span>V</span><span>B</span><span>N</span><span>M</span><span style="padding: 0 10px">Del</span></div>
         </section>
         <div style="visibility: hidden;" class="loader"></div>
         <div class="overlay" id="scorecard">

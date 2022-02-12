@@ -310,7 +310,7 @@ main .words{
     .keyboard .row span {
         /* padding: 10px 4px; */
         border-radius: 4px;
-        width: 2vh;
+        width: 4vw;
     }
 
     .keyboard {
@@ -351,7 +351,6 @@ main .words{
 @keyframes flipLetter {
     50% {transform: rotate3d(1, 0, 0, 90deg);}
 }
-
 
 .noselect {
 -webkit-touch-callout: none; /* iOS Safari */
