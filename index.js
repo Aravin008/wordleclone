@@ -161,7 +161,9 @@ function loadGameStatus() {
                         currects += wordStatus[j] == 'correct' ? 1 : 0;
                         if(currects == maxLengthWord) {
                             gameWon = true;
-                            currentRow = maxGuessWords
+                            currentRow = maxGuessWords;
+                            let timerHTML = document.getElementById('time');
+                            timerHTML.style.display = 'block';
                         }
                     }
                 }
@@ -170,6 +172,9 @@ function loadGameStatus() {
             if(currentRow<maxGuessWords && !gameWon) {
                 const currentRowHTML = wordsPanel.children[i];
                 currentRowHTML.classList.add('active')
+            } else {
+                let timerHTML = document.getElementById('time');
+                timerHTML.style.display = 'block';
             }
         }
     }
@@ -380,8 +385,10 @@ function checkMatching(currentRowHTML) {
         return;
     }
     if(currentRow == maxGuessWords) {
-        displayPermanentMessage('Try again! 😕');
-        updateGameScore(false, -1);
+        setTimeout(()=>{
+            displayPermanentMessage('Try again! 😕');
+            updateGameScore(false, -1);
+        }, FLIP_TIME*7)
     } else {
         currentRowHTML = wordsPanel.children[currentRow];
         currentRowHTML.classList.add('active');//Add active class new row
