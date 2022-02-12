@@ -310,6 +310,7 @@ main .words{
     .keyboard .row span {
         /* padding: 10px 4px; */
         border-radius: 4px;
+        width: 2vh;
     }
 
     .keyboard {
