@@ -153,22 +153,22 @@ main .words{
 .wrong {
     background-color: #787c7e !important;
     color: white;
-    transition: background-color 1s ease,color 1s ease;
+    transition: background-color .5s ease,color .5s ease;
     animation: flipLetter 1s;
 }
 
 .correct {
-    background-color: green !important;
+    background-color: #63ad63f7 !important;
     color: white;
-    transition: background-color 1s ease,color 1s ease;
-    animation: flipLetter 1s;
+    transition: background-color .5s ease,color .5s ease;
+    animation: flipLetter .5s;
 }
 
 .misplace {
     background-color: goldenrod !important;
     color: white;
-    transition: background-color 1s ease,color 1s ease;
-    animation: flipLetter 1s;
+    transition: background-color .5s ease,color .5s ease;
+    animation: flipLetter .5s;
 }
 
 .loader {

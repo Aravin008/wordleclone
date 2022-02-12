@@ -21,6 +21,7 @@ let gameScore = {
     maxStreak: 0,
     gamesWonScore:{ 1:0, 2:0, 3:0, 4:0, 5:0, 6:0}
 }
+const WinnerMessage = ['Exceptional 🤩', 'Excellent 🥳', 'Supreme 😁', 'Splendid 😁', 'Perfect 😊', 'Nice! but close 😌']
 var wordsPanel = document.querySelector(".words");
 let keyboardPanelHTML = document.querySelector('.keyboard');
 
@@ -375,7 +376,7 @@ function checkMatching(currentRowHTML) {
             gameWon = true;
             displayPermanentMessage('You guessed it right! 🥳' + '  click to play again!');
             updateGameScore(true, currentRow);
-        }, FLIP_TIME*5)
+        }, FLIP_TIME*7)
         return;
     }
     if(currentRow == maxGuessWords) {
