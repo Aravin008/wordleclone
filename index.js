@@ -442,18 +442,22 @@ function checkMatching(currentRowHTML) {
                         setTimeout(()=>{
                             gameWon = true;
                             displayPermanentMessage('You guessed it right! 🥳' + '  click to play again!');
-                            updateGameScore(true, currentRow);
+                            setTimeout(()=> {
+                                updateGameScore(true, currentRow);
+                            }, FLIP_TIME*4)
                         }, FLIP_TIME*2)
                     }
                 }, 200*index)
             })
-        },FLIP_TIME*7)
+        },FLIP_TIME*6)
         return;
     }
-    if(currentRow == maxGuessWords) {
+    if(currentRow == maxGuessWords-4) {
         setTimeout(()=>{
-            displayPermanentMessage('Try again! 😕');
-            updateGameScore(false, -1);
+            displayPermanentMessage('Try again! 😕, Correct word is : '+ gameWord.toUpperCase());
+            setTimeout(()=>{
+                updateGameScore(false, -1);
+            }, FLIP_TIME*6)
         }, FLIP_TIME*7)
     } else {
         currentRowHTML = wordsPanel.children[currentRow];
