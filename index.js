@@ -36,6 +36,23 @@ function create_UUID(){
     return uuid;
 }
 
+function encryptor(text, publicKey="publicKey") {
+    function getMessageEncoding() {
+        let message = text;
+        let enc = new TextEncoder();
+        return enc.encode(message);
+    }
+    
+    let encoded = getMessageEncoding();
+    return window.crypto.subtle.encrypt(
+        {
+        name: "RSA-OAEP"
+        },
+        publicKey,
+        encoded
+    );
+}
+
 (function onLoadSuccess(){
     console.log("calling onload")
     const user_uuid = localStorage.getItem('user_uuid');
@@ -355,6 +372,27 @@ function checkAndApplyColor(currentRowHTML) {
     })
 }
 
+function shouldPaint(currWord, letter, i, guessStat) {
+    const currWord1 = currWord.toLowerCase();
+    const totalOccurence = currWord1.split(letter).length - 1;
+    if(totalOccurence>1) {
+        const lastOccurence = (currWord.length - 1) - currWord1.split("").reverse().indexOf(letter);
+        if( lastOccurence == i){
+            let checkPreviosCorrect = true;
+            for(let ii=0;ii<maxLengthWord; ii++) {
+                if(currWord1[ii] == letter && guessStat[ii] == 'correct') {
+                    checkPreviosCorrect = false;
+                }
+            }
+            return checkPreviosCorrect;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
+}
+
 function checkMatching(currentRowHTML) {
     const guessStatus = {};
     let checkIfAllMatched = 0;
@@ -371,18 +409,18 @@ function checkMatching(currentRowHTML) {
             checkIfAllMatched += 1;
             setTimeout(() => {
                 currentLetterHTML.classList.add('correct');
-                guessStatus[i] ='correct';
             }, FLIP_TIME*i)
-        } else if(gameWord.includes(letter)) {
+            guessStatus[i] ='correct';
+        } else if(gameWord.includes(letter) && shouldPaint(currentWord, letter, i, guessStatus)) {
             setTimeout(() => {
                 currentLetterHTML.classList.add('misplace');
-                guessStatus[i] ='misplace';
             }, FLIP_TIME*i)
+            guessStatus[i] ='misplace';
         } else {
             setTimeout(() => {
                 currentLetterHTML.classList.add('wrong');
-                guessStatus[i] ='wrong';
             }, FLIP_TIME*i)
+            guessStatus[i] ='wrong';
         }
     }
     // console.log("check matched", checkIfAllMatched)
