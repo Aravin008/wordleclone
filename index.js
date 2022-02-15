@@ -452,7 +452,7 @@ function checkMatching(currentRowHTML) {
         },FLIP_TIME*6)
         return;
     }
-    if(currentRow == maxGuessWords-4) {
+    if(currentRow == maxGuessWords) {
         setTimeout(()=>{
             displayPermanentMessage('Try again! 😕, Correct word is : '+ gameWord.toUpperCase());
             setTimeout(()=>{
