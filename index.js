@@ -131,9 +131,15 @@ function handleDisplayOverlay(event, displayString, type) {
         let helpHTML = document.getElementById('help');
         helpHTML.style.display = displayString
     }
-    if(type = 'setting') {
+    if(type == 'setting') {
         // setting display
+        let helpHTML = document.getElementById('setting');
+        helpHTML.style.display = displayString
     }
+}
+
+function handleTimerSetting(e) {
+    console.log("event value", e.target.value)
 }
 
 function loadFamousWords() {
