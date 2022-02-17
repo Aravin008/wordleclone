@@ -475,8 +475,14 @@ function colorKeyboardLayout(letter, gameLetter, gameWord) {
                 ele.classList.remove('misplace');
                 ele.classList.add('correct');
             } else if(gameWord.includes(letter)) {
+                if(ele.classList.contains('correct')) {
+                    return; // Don't update if its correct
+                }
                 ele.classList.add('misplace');
             } else {
+                if(ele.classList.contains('correct')) {
+                    return; // Don't update if its correct
+                }
                 ele.classList.add('wrong');
             }
         }
