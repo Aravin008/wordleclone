@@ -269,7 +269,7 @@ function loadUpdateTheDictionary() {
 function handleLoader(fetchVal){
     fetching = fetchVal;
     const loaderHTML = document.querySelector('.loader');
-    loaderHTML.style.visibility = fetchVal ? 'visible' : 'hidden';
+    loaderHTML.style.display = fetchVal ? 'block' : 'none';
 }
 
 function displayPermanentMessage(msg) {
@@ -524,7 +524,7 @@ function handleScoreCardDisplay(e, displayStyle) {
             if(val != 0){
                 percentage = Math.floor((val / baseScore)*100);
             }
-            scoreDivHTML.style.width = percentage ? (percentage + '%') : '5%';
+            scoreDivHTML.style.width = percentage ? `calc(${percentage}% - 30px)` : '5%';
             scoreDivHTML.innerHTML = val;
         })
     }

@@ -274,6 +274,7 @@ main .words{
     padding: 10px;
     height: 24px;
     width: 24px;
+    cursor: pointer;
 }
 
 .overlay .score ul {
@@ -331,6 +332,7 @@ main .words{
     /* background-color: #6aaa64; */
     color: white;
     background-color: #495E88;
+    cursor: pointer;
 }
 
 #enter-btn,#delete-btn {
