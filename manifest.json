@@ -9,18 +9,18 @@
     "description": "Wordle clone for fun!",
     "icons": [
         {
-            "src": "/logo_196x196.png",
+            "src": "https://aravin008.github.io/wordleclone/logo_196x196.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "maskable"
         },
         {
-            "src": "/logo_256x256.png",
+            "src": "https://aravin008.github.io/wordleclone/logo_256x256.png",
             "sizes": "256x256",
             "type": "image/png"
         },
         {
-            "src": "/logo_512x512.png",
+            "src": "https://aravin008.github.io/wordleclone/logo_512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
