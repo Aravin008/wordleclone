@@ -7,19 +7,19 @@ this.addEventListener("install", (event) => {
         caches.open(cacheData).then((cache)=> {
             cache.addAll([
                 '/index.js',
-                '/',
+                '/wordleclone/',
                 '/style.css',
                 '/manifest.json',
                 '/mostused.json',
                 '/words.json',
-                './sw.js',
+                '/sw.js',
                 'https://img.icons8.com/material-outlined/24/000000/help.png',
                 'https://img.icons8.com/external-kmg-design-basic-outline-kmg-design/32/000000/external-setting-business-management-kmg-design-basic-outline-kmg-design.png',
                 'https://img.icons8.com/external-neu-royyan-wijaya/32/000000/external-competition-neu-game-neu-royyan-wijaya.png',
-                'http://localhost:5500/close_white.svg',
+                'https://aravin008.github.io/wordleclone/close_white.svg',
                 'https://aravin008.github.io/wordleclone/share_icon.png',
                 'https://aravin008.github.io/wordleclone/favicon.png',
-                '/logo_196x196.png',
+                'https://aravin008.github.io/wordleclone/logo_196x196.png',
                 'https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@600&display=swap'
             ])
         })
@@ -29,7 +29,7 @@ this.addEventListener("install", (event) => {
 this.addEventListener('fetch', (event) => {
     if(!navigator.onLine) {
         console.log("inside offline")
-        if(event.request.url == 'http://localhost:5500/index.js') {
+        if(event.request.url == 'https://aravin008.github.io/index.js') {
         // event.waitUntil(
         //     this.registration.showNotification('Hello!',{
         //         body: 'Hello!!! from notification block.'
