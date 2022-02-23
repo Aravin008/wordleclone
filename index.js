@@ -399,7 +399,7 @@ function randomProperty(obj) {
 function checkNSendNotification(title, message) {
     var hr = (new Date()).getHours();
     const startTimeHR = gameSettings && gameSettings.notificationBetween && gameSettings.notificationBetween.from || 9;
-    const EndTimerHR = gameSettings && gameSettings.notificationBetween && gameSettings.notificationBetween.from || 19;
+    const EndTimerHR = gameSettings && gameSettings.notificationBetween && gameSettings.notificationBetween.to || 19;
     if((hr > startTimeHR) && (hr < EndTimerHR) && gameSettings.notification) {
         createScheduledNotification(title, message);
     }
