@@ -1,6 +1,6 @@
 console.warn("code Ready!! boyz!!")
 let appVersion = 'v0.0.1'
-let cacheData = 'appV4';
+let cacheData = 'appV5';
 this.addEventListener("install", (event) => {
     console.log("sw install",event)
     event.waitUntil(
