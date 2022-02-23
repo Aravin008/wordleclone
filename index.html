@@ -282,40 +282,13 @@
         if('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/wordleclone/sw.js').then((response) => {
                 // console.log("response", response)
-                var serviceWorker;
-                if (response.installing) {
-                    serviceWorker = response.installing;
-                    // console.log('Service worker installing');
-                } else if (response.waiting) {
-                    serviceWorker = response.waiting;
-                    // console.log('Service worker installed & waiting');
-                } else if (response.active) {
-                    serviceWorker = response.active;
-                    // console.log('Service worker active');
-                }
-
-                if (serviceWorker) {
-                    console.log("sw current state", serviceWorker.state);
-                    if (serviceWorker.state == "activated") {
-                        //If push subscription wasnt done yet have to do here
-                        console.log("sw already activated - Do watever needed here");
-                        response.pushManager.getSubscription()
-                        .then( subscription => {
-                            return response.pushManager.subscribe({
-                                userVisibleOnly: true,
-                                applicationServerKey: determineAppServerKey()
-                            })
-                        })
-                    }
-                    // serviceWorker.addEventListener("statechange", function(e) {
-                    //     console.log("sw statechange : ", e.target.state);
-                    //     if (e.target.state == "activated") {
-                    //         // use pushManger for subscribing here.
-                    //         console.log("Just now activated. now we can subscribe for push notification")
-                    //         subscribeForPushNotification(reg);
-                    //     }
-                    // });
-                }
+                response.pushManager.getSubscription()
+                .then( subscription => {
+                    return response.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: determineAppServerKey()
+                    })
+                })
             }).catch(error => console.log("Error", error))
         } else {
             console.log("Your browser doesn't support Service Worker!")

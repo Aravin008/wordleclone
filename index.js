@@ -165,6 +165,7 @@ function loadGameSettings() {
     let gameSettingLocal = localStorage.getItem('gamesettings');
     if(gameSettingLocal){
         gameSettings = JSON.parse(gameSettingLocal);
+        gameSettingLocal = {...gameSettings}
         let time_rangeHTML = document.getElementById('time-range');
         time_rangeHTML.value = gameSettings.gameTimer;
         let notificationHTML = document.getElementById('notification');
@@ -240,6 +241,7 @@ function handleSettingChange(e, type) {
         gameSettings = gameSettingsTemp;
         localStorage.setItem('gamesettings', JSON.stringify(gameSettings));
         handleDisplayOverlay(e, 'none', 'setting')
+        console.log("settings", gameSettings, gameSettingsTemp)
     }
 }
 
