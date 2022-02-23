@@ -515,6 +515,7 @@ function checkMatching(currentRowHTML) {
     // console.log("check matched", checkIfAllMatched)
     // On successfully parsed the word
     words.push({word: currentWord, status: guessStatus});
+    localStorage.setItem('currentGameStatus', JSON.stringify(words))
     currentWord = "";
     currentRowHTML.classList.remove('active');//remove active class old row
     // Move to next row after checking.
