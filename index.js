@@ -165,7 +165,7 @@ function loadGameSettings() {
     let gameSettingLocal = localStorage.getItem('gamesettings');
     if(gameSettingLocal){
         gameSettings = JSON.parse(gameSettingLocal);
-        gameSettingLocal = {...gameSettings}
+        gameSettingsTemp = {...gameSettings}
         let time_rangeHTML = document.getElementById('time-range');
         time_rangeHTML.value = gameSettings.gameTimer;
         let notificationHTML = document.getElementById('notification');
