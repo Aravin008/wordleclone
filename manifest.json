@@ -2,7 +2,7 @@
     "theme_color": "#317EFB",
     "background_color": "#f69435",
     "display": "standalone",
-    "scope": "/",
+    "scope": "/wordleclone/",
     "start_url": ".",
     "name": "WordleClone",
     "short_name": "WordleClone",
