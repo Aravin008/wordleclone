@@ -1,0 +1,28 @@
+{
+    "theme_color": "#317EFB",
+    "background_color": "#f69435",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": ".",
+    "name": "WordleClone",
+    "short_name": "WordleClone",
+    "description": "Wordle clone for fun!",
+    "icons": [
+        {
+            "src": "/logo_196x196.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/logo_256x256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "/logo_512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

@@ -18,6 +18,9 @@
     <meta property="og:type" content="article">
     </meta>
     <link rel="stylesheet" href="./style.css">
+    <meta name="theme-color" content="#317EFB"/>
+    <link rel="apple-touch-icon" href="/logo_196x196.png">
+    <link rel="manifest" href="./manifest.json" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@600&display=swap" rel="stylesheet">
@@ -27,25 +30,24 @@
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-H9V8K6L34N');
     </script>
 </head>
 
 <body style="font-family: 'Libre Franklin', sans-serif;">
+    <p id="onlineStatus" class="offlinestatus" style="position: absolute;">YOU ARE OFFLINE</p>
     <div class="container">
         <header>
             <nav>
                 <h1 style="position: relative;">Wordle<em
                         style="font-size:10px;position:absolute;right:5px;bottom:0;">clone</em></h1>
                 <div>
-                    <!-- <a href="/wordleclone/"><p >Home</p></a> -->
                     <a href="javascript:void(0)" onclick="handleDisplayOverlay(event, 'flex', 'help');">
                         <img src="https://img.icons8.com/material-outlined/24/000000/help.png" style="height: 24px;" />
                     </a>
-                    <!-- <a href="javascript:void(0)" onclick="handleDisplayOverlay(event, 'flex', 'setting');">
+                    <a href="javascript:void(0)" onclick="handleDisplayOverlay(event, 'flex', 'setting');">
                         <img src="https://img.icons8.com/external-kmg-design-basic-outline-kmg-design/32/000000/external-setting-business-management-kmg-design-basic-outline-kmg-design.png" style="height: 24px;"/>
-                    </a> -->
+                    </a>
                     <a href="javascript:void(0)" onclick="handleScoreCardDisplay(event, 'flex');">
                         <img src="https://img.icons8.com/external-neu-royyan-wijaya/32/000000/external-competition-neu-game-neu-royyan-wijaya.png"
                             style="height: 24px;">
@@ -178,29 +180,117 @@
                         style="background-color: white;" src="./close_white.svg" />
                 </div>
                 <h2>Your Settings</h2>
-                <ul class="rules">
-                    <li class="rule">Game session time: 
-                        <select onchange="handleTimerSetting(event);">
-                            <option style="font-size: medium;" value="900">15 Min</option>
-                            <option style="font-size: medium;" value="1800">30 Min</option>
-                            <option style="font-size: medium;" value="2700">45 Min</option>
-                            <option style="font-size: medium;" value="3600">1 Hour</option>
-                            <option style="font-size: medium;" value="7200">2 Hours</option>
-                            <option style="font-size: medium;" value="14400">4 Hours</option>
-                            <option style="font-size: medium;" value="57600">8 Hours</option>
-                            <option style="font-size: medium;" value="115200">16 Hours</option>
-                            <option style="font-size: medium;" value="230400">24 Hours</option>
-                        </select>
+                <ul class="rules settings" style="display: block;">
+                    <li class="rule setting" >
+                        <div class="grid-left">Each Game session:</div>
+                        <div class="grid-right">
+                            <select id="time-range" onchange="handleSettingChange(event, 'timer_range');" style="width: fit-content;">
+                                <!-- <option style="font-size: medium;" value="900">15 Min</option> -->
+                                <!-- <option style="font-size: medium;" value="1800">30 Min</option> -->
+                                <!-- <option style="font-size: medium;" value="2700">45 Min</option> -->
+                                <option style="font-size: medium;" value="3600">1 Hour</option>
+                                <option style="font-size: medium;" selected value="7200">2 Hours</option>
+                                <option style="font-size: medium;" value="14400">4 Hours</option>
+                                <option style="font-size: medium;" value="57600">8 Hours</option>
+                                <option style="font-size: medium;" value="115200">16 Hours</option>
+                                <option style="font-size: medium;" value="230400">24 Hours</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="rule setting">
+                        <div class="grid-left">Notification:</div>
+                        <div class="grid-right">
+                            <input id="notification" style="width: 24px;height:24px;" type="checkbox" onchange="handleSettingChange(event, 'notification');">
+                        </div>
+                    </li>
+                    <li class="rule setting">
+                        <div class="grid-left">Notification Between (00:00 - 24:00):</div>
+                        <div class="grid-right">
+                            <div>
+                                <lable>Start:</lable>
+                                <select id="noti-from" onchange="handleSettingChange(event, 'notification_range_from');">
+                                    <option style="font-size: medium;" value="1">1AM</option>
+                                    <option style="font-size: medium;" value="2">2AM</option>
+                                    <option style="font-size: medium;" value="3">3AM</option>
+                                    <option style="font-size: medium;" value="4">4AM</option>
+                                    <option style="font-size: medium;" value="5">5AM</option>
+                                    <option style="font-size: medium;" value="6">6AM</option>
+                                    <option style="font-size: medium;" value="7">7AM</option>
+                                    <option style="font-size: medium;" value="8">8AM </option>
+                                    <option style="font-size: medium;" selected value="9">9AM </option>
+                                    <option style="font-size: medium;" value="10">10AM </option>
+                                    <option style="font-size: medium;" value="11">11AM </option>
+                                    <option style="font-size: medium;" value="12">12PM </option>
+                                    <option style="font-size: medium;" value="13">1PM </option>
+                                    <option style="font-size: medium;" value="14">2PM </option>
+                                    <option style="font-size: medium;" value="15">3PM </option>
+                                    <option style="font-size: medium;" value="16">4PM </option>
+                                    <option style="font-size: medium;" value="17">5PM </option>
+                                    <option style="font-size: medium;" value="18">6PM </option>
+                                    <option style="font-size: medium;" value="19">7PM </opti7PM>
+                                    <option style="font-size: medium;" value="20">8PM </option>
+                                    <option style="font-size: medium;" value="21">9PM </option>
+                                    <option style="font-size: medium;" value="22">10PM </option>
+                                    <option style="font-size: medium;" value="23">11PM </option>
+                                    <option style="font-size: medium;" value="24">12AM </option>
+                                </select>
+                            </div>
+                            <div>
+                                <lable>End : </lable>
+                            <select id="noti-to" onchange="handleSettingChange(event, 'notification_range_to');">
+                                <option style="font-size: medium;" value="1">1AM</option>
+                                <option style="font-size: medium;" value="2">2AM</option>
+                                <option style="font-size: medium;" value="3">3AM</option>
+                                <option style="font-size: medium;" value="4">4AM</option>
+                                <option style="font-size: medium;" value="5">5AM</option>
+                                <option style="font-size: medium;" value="6">6AM</option>
+                                <option style="font-size: medium;" value="7">7AM</option>
+                                <option style="font-size: medium;" value="8">8AM </option>
+                                <option style="font-size: medium;" value="9">9AM </option>
+                                <option style="font-size: medium;" value="10">10AM </option>
+                                <option style="font-size: medium;" value="11">11AM </option>
+                                <option style="font-size: medium;" value="12">12PM </option>
+                                <option style="font-size: medium;" value="13">1PM </option>
+                                <option style="font-size: medium;" value="14">2PM </option>
+                                <option style="font-size: medium;" value="15">3PM </option>
+                                <option style="font-size: medium;" value="16">4PM </option>
+                                <option style="font-size: medium;" value="17">5PM </option>
+                                <option style="font-size: medium;" value="18">6PM </option>
+                                <option style="font-size: medium;" selected value="19">7PM </option>
+                                <option style="font-size: medium;" value="20">8PM </option>
+                                <option style="font-size: medium;" value="21">9PM </option>
+                                <option style="font-size: medium;" value="22">10PM </option>
+                                <option style="font-size: medium;" value="23">11PM </option>
+                                <option style="font-size: medium;" value="24">12AM </option>
+                            </select>
+                            </div>
+                        </div>
                     </li>
                 </ul>
-                <hr style="margin-top: 10px;">
-                </hr>
-                <button onclick="saveSetting();">Save</button>
+                <!-- <hr style="margin-top: 10px;background-color: #FFF;">
+                </hr> -->
+                <button onclick="handleSettingChange(event, 'save');">Save</button>
             </div>
         </div>
     </div>
     </div>
     <script src="./index.js"></script>
+    <script>
+        if('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').then((response) => {
+                // console.log("response", response)
+                response.pushManager.getSubscription()
+                .then( subscription => {
+                    return response.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: determineAppServerKey()
+                    })
+                })
+            }).catch(error => console.log("Error", error))
+        } else {
+            console.log("Your browser doesn't support Service Worker!")
+        }
+    </script>
 </body>
 
 </html>

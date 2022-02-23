@@ -32,6 +32,30 @@ header{
     left: 20%;
 }
 
+.offlinestatus {
+    position: absolute;
+    top: 0px;
+    padding: 1px;
+    font-size: 10px;
+    background: #696969;
+    color: white;
+    width: 100%;
+    text-align: center;
+    display: none
+}
+
+.onlinestatus {
+    position: absolute;
+    top: 0px;
+    padding: 1px;
+    font-size: 10px;
+    background: green;
+    color: white;
+    width: 100%;
+    text-align: center;
+    display: none
+}
+
 nav {
     display: flex;
     justify-content: space-between;
@@ -72,7 +96,7 @@ hr {
     clear:both;
     display:block;    
     background-color:#000;
-    height: 1px;
+    height: 2px;
   }
 
 main {
@@ -294,6 +318,41 @@ main .words{
     font-weight: 900;
     font-size: 24px;
     padding: 5px;
+}
+
+.overlay .settings .setting{
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+    grid-row-gap: 20px;
+    align-items: center;
+    border: 1px solid;
+}
+
+.overlay .settings {
+    padding-top: 20px;
+    padding-left: 0px;
+}
+
+.overlay .settings .grid-left {
+    text-align: right;
+    padding: 10px;
+}
+
+.overlay .settings .grid-right {
+    text-align: left;
+    padding: 10px;
+    border-left: 2px solid;
+}
+
+.overlay .game-help button {
+    text-align: center;
+    margin: 0 auto;
+    display: flex;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 4px;
+    margin-top: 5px;
 }
 
 .score .guess-dist .progress-status {

@@ -21,11 +21,22 @@ let gameScore = {
     maxStreak: 0,
     gamesWonScore:{ 1:0, 2:0, 3:0, 4:0, 5:0, 6:0}
 }
-const WinnerMessage = ['Exceptional 🤩', 'Excellent 🥳', 'Supreme 😁', 'Splendid 😁', 'Perfect 😊', 'Nice! but close 😌']
+let gameSettings = {
+    gameTimer: HOURS_2,
+    notification: false,
+    notificationBetween: {
+        from: 9,
+        to: 19
+    }
+}
+let gameSettingsTemp = { ...gameSettings }
+const WinnerMessage = ['Magnificent 🤩', 'Excellent 🥳', 'Wonderful 😁', 'Splendid 😁', 'Perfect 😊', 'Nice! It was close 😅']
 var wordsPanel = document.querySelector(".words");
 let keyboardPanelHTML = document.querySelector('.keyboard');
 
 // INITIAL LOAD -- START ---
+window.addEventListener('online',  updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
 function create_UUID(){
     var dt = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -34,6 +45,28 @@ function create_UUID(){
         return (c=='x' ? r :(r&0x3|0x8)).toString(16);
     });
     return uuid;
+}
+
+function updateOnlineStatus(event, isOnload) {
+    var condition = navigator.onLine ? "online" : "offline";
+    const onlineStatusHTML = document.getElementById('onlineStatus');
+    if(condition == 'offline') {
+        onlineStatusHTML.classList.remove('onlinestatus');
+        onlineStatusHTML.classList.add('offlinestatus');
+        onlineStatusHTML.innerHTML = 'YOU ARE OFFLINE'
+        onlineStatusHTML.style.display = 'block';
+    } else {
+        if(isOnload) {
+            return;
+        }
+        onlineStatusHTML.innerHTML = 'YOU ARE ONLINE'
+        onlineStatusHTML.style.display = 'block';
+        onlineStatusHTML.classList.remove('offlinestatus');
+        onlineStatusHTML.classList.add('onlinestatus');
+        setTimeout(()=> {
+            onlineStatusHTML.style.display = 'none';
+        },3000)
+    }
 }
 
 function encryptor(text, publicKey="publicKey") {
@@ -55,6 +88,7 @@ function encryptor(text, publicKey="publicKey") {
 
 (function onLoadSuccess(){
     console.log("calling onload")
+    updateOnlineStatus('', true);
     const user_uuid = localStorage.getItem('user_uuid');
     if(!user_uuid) {
         const id = create_UUID();
@@ -69,6 +103,7 @@ function encryptor(text, publicKey="publicKey") {
         // batchWordGenerator();
     })
     loadGameScore();
+    loadGameSettings();
 })();
 
 window.addEventListener('beforeunload', function (e) {
@@ -94,6 +129,23 @@ function loadGameScore(){
         gameScore = JSON.parse(gameScoreLocal);
     } else {
         localStorage.setItem('gamescore', JSON.stringify(gameScore));
+    }
+}
+
+function loadGameSettings() {
+    let gameSettingLocal = localStorage.getItem('gamesettings');
+    if(gameSettingLocal){
+        gameSettings = JSON.parse(gameSettingLocal);
+        let time_rangeHTML = document.getElementById('time-range');
+        time_rangeHTML.value = gameSettings.gameTimer;
+        let notificationHTML = document.getElementById('notification');
+        notificationHTML.checked = gameSettings.notification;
+        let notificationFromHTML = document.getElementById('noti-from');
+        notificationFromHTML.value = gameSettings.notificationBetween.from;
+        let notificationTo = document.getElementById('noti-to');
+        notificationTo.value = gameSettings.notificationBetween.to;
+    } else {
+        localStorage.setItem('gamesettings', JSON.stringify(gameSettings));
     }
 }
 
@@ -133,20 +185,40 @@ function handleDisplayOverlay(event, displayString, type) {
     }
     if(type == 'setting') {
         // setting display
+        loadGameSettings();
         let helpHTML = document.getElementById('setting');
         helpHTML.style.display = displayString
     }
 }
 
-function handleTimerSetting(e) {
-    console.log("event value", e.target.value)
+function handleSettingChange(e, type) {
+    if(type == 'timer_range' && e.target.value) {
+        const val = parseInt(e.target.value, 10);
+        gameSettingsTemp.gameTimer = val;
+    }
+    if(type == 'notification') {
+        const val = e.target.checked;
+        gameSettingsTemp.notification = val;
+    }
+    if(type == 'notification_range_from' || type == 'notification_range_to') {
+        const val = parseInt(e.target.value, 10);
+        if(!gameSettingsTemp.notificationBetween) {
+            gameSettingsTemp.notificationBetween = {}
+        } 
+        gameSettingsTemp.notificationBetween[type == 'notification_range_from' ? 'from' : 'to'] = val;
+    }
+    if(type == 'save') {
+        gameSettings = gameSettingsTemp;
+        localStorage.setItem('gamesettings', JSON.stringify(gameSettings));
+        handleDisplayOverlay(e, 'none', 'setting')
+    }
 }
 
 function loadFamousWords() {
     const wordsList = localStorage.getItem('mostused');
         if(!wordsList) {
             console.log("Fetchin")
-            let url = window.origin == 'http://127.0.0.1:5500' ? '/mostused.json' : '/wordleclone/mostused.json'
+            let url = window.origin == 'https://aravin008.github.io/' ? '/wordleclone/mostused.json' : '/mostused.json';
             fetch(url)
             .then(data => data.json())
             .then(res => {
@@ -224,7 +296,7 @@ function loadGameStatus() {
 function didTimeElapse(timestamp) {
     const seconds = timeElapsedInSeconds(timestamp)
     // console.log(seconds + " seconds");
-    if(seconds >= HOURS_2) {
+    if(seconds >= gameSettings.gameTimer) {
         return true;
     } else {
         return false;
@@ -236,7 +308,7 @@ function loadUpdateTheDictionary() {
         const wordsList = localStorage.getItem('words');
         if(!wordsList) {
             console.log("Fetchin")
-            let url = window.origin == 'http://127.0.0.1:5500' ? '/words.json' : '/wordleclone/words.json'
+            let url = window.origin == 'https://aravin008.github.io' ? '/wordleclone/words.json' : '/words.json';
             fetch(url)
             .then(data => data.json())
             .then(res => {
@@ -293,11 +365,20 @@ function randomProperty(obj) {
     return obj[keys[ keys.length * Math.random() << 0]];
 };
 
+function checkNSendNotification(title, message) {
+    var hr = (new Date()).getHours();
+    const startTimeHR = gameSettings && gameSettings.notificationBetween && gameSettings.notificationBetween.from || 9;
+    const EndTimerHR = gameSettings && gameSettings.notificationBetween && gameSettings.notificationBetween.from || 19;
+    if((hr > startTimeHR) && (hr < EndTimerHR) && gameSettings.notification) {
+        createScheduledNotification(title, message);
+    }
+}
+
 function startTimer(timestamp) {
     if(!intervalID) {
         intervalID = setInterval(() => {
             if(timestamp) {
-                let seconds = HOURS_2 - timeElapsedInSeconds(timestamp);
+                let seconds = gameSettings.gameTimer - timeElapsedInSeconds(timestamp);
                 hours = Math.floor(seconds / (60*60));
                 if(hours >= 1) { seconds -= hours*60*60; }
                 minutes = Math.floor(seconds / 60);
@@ -311,7 +392,8 @@ function startTimer(timestamp) {
                 sec = 0
                 intervalID = clearInterval(intervalID);
                 localStorage.removeItem('gameword')
-                alert("Time out! Game over!!")
+                checkNSendNotification("Wordle clone", 'New Word is now avalibale! 🥳');
+                // alert("Time out! Game over!!")
                 generateNewWord();
                 refreshPage();
             }
@@ -356,12 +438,13 @@ function isWordValid(word){
         let validity =  capitalizedWordForDict in dictionary;
         // console.log("valididty", validity)
         if(!validity) {
-            if(fetching == false) {
-                handleLoader(true);
-                fetchWordInfo(capitalizedWordForDict)
-                .then(res => { resolve(res);  handleLoader(false);})
-                .catch(err => { reject(false);  handleLoader(false);})
-            }
+            reject(false); 
+            // if(fetching == false) {
+            //     handleLoader(true);
+            //     fetchWordInfo(capitalizedWordForDict)
+            //     .then(res => { resolve(res);  handleLoader(false);})
+            //     .catch(err => { reject(false);  handleLoader(false);})
+            // }
         } else {
             resolve(true);
         }
@@ -447,7 +530,7 @@ function checkMatching(currentRowHTML) {
                         // Udpate and display the Messages and scoreboard
                         setTimeout(()=>{
                             gameWon = true;
-                            displayPermanentMessage('You guessed it right! 🥳' + '  click to play again!');
+                            displayPermanentMessage(WinnerMessage[currentRow-1] + ', You guessed it right! 🥳');
                             setTimeout(()=> {
                                 updateGameScore(true, currentRow);
                             }, FLIP_TIME*4)
@@ -524,7 +607,7 @@ function handleScoreCardDisplay(e, displayStyle) {
             if(val != 0){
                 percentage = Math.floor((val / baseScore)*100);
             }
-            scoreDivHTML.style.width = percentage ? `calc(${percentage}% - 30px)` : '5%';
+            scoreDivHTML.style.width = percentage ? `max(calc(${percentage}% - 30px), 5%)` : '5%';
             scoreDivHTML.innerHTML = val;
         })
     }
@@ -588,4 +671,40 @@ async function handleKeyboard(e){
         }
     }
     
+}
+
+
+// Service Worker
+
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
+function determineAppServerKey() {
+    // Public Key:
+    // BPWBGw-lmK5W1-s3Q_Fs3Czds24zerLyYKOBazSK2COfgQZQi5SlUPzmqy50zpVmmyItG94k-d-zOITfFLV4r-Q
+    // Private Key:
+    // ulCEYjDKpii6SUr3kytCj008qQlLbqgx4MqyFU3cBtI
+    var vapidPublicKey = 'BPWBGw-lmK5W1-s3Q_Fs3Czds24zerLyYKOBazSK2COfgQZQi5SlUPzmqy50zpVmmyItG94k-d-zOITfFLV4r-Q' 
+    return urlBase64ToUint8Array(vapidPublicKey);
+}
+
+
+const createScheduledNotification = async (title, message) => {
+    navigator.serviceWorker.ready
+      .then(function (registration) {
+            registration.showNotification(title,{
+                body: message
+            })
+        })
 }
