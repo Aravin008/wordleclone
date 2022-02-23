@@ -6,13 +6,13 @@ this.addEventListener("install", (event) => {
     event.waitUntil(
         caches.open(cacheData).then((cache)=> {
             cache.addAll([
-                '/index.js',
+                '/wordleclone/index.js',
                 '/wordleclone/',
-                '/style.css',
-                '/manifest.json',
-                '/mostused.json',
-                '/words.json',
-                '/sw.js',
+                '/wordleclone/style.css',
+                '/wordleclone/manifest.json',
+                '/wordleclone/mostused.json',
+                '/wordleclone/words.json',
+                '/wordleclone/sw.js',
                 'https://img.icons8.com/material-outlined/24/000000/help.png',
                 'https://img.icons8.com/external-kmg-design-basic-outline-kmg-design/32/000000/external-setting-business-management-kmg-design-basic-outline-kmg-design.png',
                 'https://img.icons8.com/external-neu-royyan-wijaya/32/000000/external-competition-neu-game-neu-royyan-wijaya.png',
