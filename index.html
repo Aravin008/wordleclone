@@ -277,7 +277,7 @@
     <script src="./index.js"></script>
     <script>
         if('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js').then((response) => {
+            navigator.serviceWorker.register('https://aravin008.github.io/wordleclone/sw.js').then((response) => {
                 // console.log("response", response)
                 response.pushManager.getSubscription()
                 .then( subscription => {
