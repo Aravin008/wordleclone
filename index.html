@@ -280,14 +280,14 @@
             navigator.serviceWorker.register('./sw.js').then((response) => {
                 // console.log("response", response)
                 var serviceWorker;
-                if (reg.installing) {
-                    serviceWorker = reg.installing;
+                if (response.installing) {
+                    serviceWorker = response.installing;
                     // console.log('Service worker installing');
-                } else if (reg.waiting) {
-                    serviceWorker = reg.waiting;
+                } else if (response.waiting) {
+                    serviceWorker = response.waiting;
                     // console.log('Service worker installed & waiting');
-                } else if (reg.active) {
-                    serviceWorker = reg.active;
+                } else if (response.active) {
+                    serviceWorker = response.active;
                     // console.log('Service worker active');
                 }
 
