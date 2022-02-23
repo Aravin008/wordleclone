@@ -1,6 +1,6 @@
 console.warn("code Ready!! boyz!!")
 let appVersion = 'v0.0.1'
-let cacheData = 'appV2';
+let cacheData = 'appV3';
 this.addEventListener("install", (event) => {
     console.log("sw install",event)
     event.waitUntil(
@@ -20,6 +20,7 @@ this.addEventListener("install", (event) => {
                 'https://aravin008.github.io/wordleclone/share_icon.png',
                 'https://aravin008.github.io/wordleclone/favicon.png',
                 'https://aravin008.github.io/wordleclone/logo_196x196.png',
+                'https://img.icons8.com/pastel-glyph/344/download.png',
                 'https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@600&display=swap'
             ])
         })

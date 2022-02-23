@@ -399,6 +399,12 @@ main .words{
     padding: 0 14px;
 }
 
+.add-button {
+    background: silver;
+    cursor: pointer;
+    background-color: transparent;
+}
+
 /* Mobile and Tab  */
 @media only screen and (max-width: 600px) {
     main{
@@ -453,6 +459,9 @@ main .words{
     
 }
 
+/* ---- END MOBILE STYLES ----- */
+
+/* Animation */
 @keyframes flipLetter {
     50% {transform: rotate3d(1, 0, 0, 90deg);}
 }
@@ -472,3 +481,4 @@ main .words{
             user-select: none; /* Non-prefixed version, currently
                                 supported by Chrome and Opera */
 }
+
