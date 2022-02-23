@@ -1,11 +1,11 @@
 {
     "theme_color": "#317EFB",
-    "background_color": "#f69435",
+    "background_color": "#3399ff",
     "display": "standalone",
     "scope": "/wordleclone/",
     "start_url": ".",
-    "name": "WordleClone",
-    "short_name": "WordleClone",
+    "name": "Wordle Clone",
+    "short_name": "Wordle Clone",
     "description": "Wordle clone for fun!",
     "icons": [
         {
