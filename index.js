@@ -165,15 +165,16 @@ function loadGameSettings() {
     let gameSettingLocal = localStorage.getItem('gamesettings');
     if(gameSettingLocal){
         gameSettings = JSON.parse(gameSettingLocal);
+        gameSettings.notification = false;
         gameSettingsTemp = {...gameSettings}
         let time_rangeHTML = document.getElementById('time-range');
         time_rangeHTML.value = gameSettings.gameTimer;
-        let notificationHTML = document.getElementById('notification');
-        notificationHTML.checked = gameSettings.notification;
-        let notificationFromHTML = document.getElementById('noti-from');
-        notificationFromHTML.value = gameSettings.notificationBetween.from;
-        let notificationTo = document.getElementById('noti-to');
-        notificationTo.value = gameSettings.notificationBetween.to;
+        // let notificationHTML = document.getElementById('notification');
+        // notificationHTML.checked = gameSettings.notification;
+        // let notificationFromHTML = document.getElementById('noti-from');
+        // notificationFromHTML.value = gameSettings.notificationBetween.from;
+        // let notificationTo = document.getElementById('noti-to');
+        // notificationTo.value = gameSettings.notificationBetween.to;
     } else {
         localStorage.setItem('gamesettings', JSON.stringify(gameSettings));
     }
@@ -423,7 +424,7 @@ function startTimer(timestamp) {
                 sec = 0
                 intervalID = clearInterval(intervalID);
                 localStorage.removeItem('gameword')
-                checkNSendNotification("Wordle clone", 'New Word is now avalibale! 🥳');
+                // checkNSendNotification("Wordle clone", 'New Word is now avalibale! 🥳');
                 // alert("Time out! Game over!!")
                 generateNewWord();
                 refreshPage();
@@ -449,6 +450,7 @@ function generateNewWord(forceGenerate= false) {
     localStorage.removeItem('currentGameStatus'); //Delete old word game status
     words = [];
     startTimer(timeStampNewWord);
+    setTimeout(() => checkNSendNotification("Wordle clone", 'New Word is now avalibale! 🥳'), 10000)
 }
 
 function fetchWordInfo(word) {
